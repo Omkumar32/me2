@@ -1,0 +1,21 @@
+{
+  "name": "tux-portfolio",
+  "version": "1.0.0",
+  "description": "Om Kumar — Full Stack Developer Portfolio",
+  "main": "server.js",
+  "scripts": {
+    "dev": "concurrently \"node server.js\" \"vite\"",
+    "build": "vite build",
+    "start": "node server.js",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4",
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "nodemailer": "^9.0.3"
+  }
+}

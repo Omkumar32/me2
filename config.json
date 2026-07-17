@@ -1,0 +1,16 @@
+{
+  "smtp": {
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "secure": false,
+    "user": "omkumar4138@email.com",
+    "pass": "tuxadmin",
+    "receiver": "omkumar4138@email.com"
+  },
+  "socials": {
+    "github": "https://github.com/Omkumar32",
+    "linkedin": "https://www.linkedin.com/in/om-kumar-07441728a/",
+    "instagram": "https://instagram.com",
+    "email": "omkumar4138@email.com"
+  }
+}

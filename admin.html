@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TUX Admin — Control Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface2: #1a1a1a;
+      --border: rgba(255,255,255,0.08);
+      --accent: #c8ff3d;
+      --text: #f0f0f0;
+      --text-dim: #888;
+      --red: #ff4a4a;
+      --font-body: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    body {
+      background: var(--bg);
+      font-family: var(--font-body);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    /* ─── Auth Card ─────────────────────────── */
+    #authPanel {
+      width: 100%;
+      max-width: 420px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 40px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.6);
+    }
+
+    .auth-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    .auth-logo span {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      color: var(--text);
+    }
+    .auth-logo span em { color: var(--accent); font-style: normal; }
+
+    .auth-subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+      font-family: var(--font-mono);
+      letter-spacing: 0.5px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .field label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+    .field input {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 16px;
+      font-size: 14px;
+      font-family: var(--font-body);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+    }
+    .field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(200,255,61,0.1);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #0a0a0a;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px rgba(200,255,61,0.35);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .auth-error {
+      display: none;
+      background: rgba(255,74,74,0.08);
+      border: 1px solid rgba(255,74,74,0.25);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #ff7a7a;
+      margin-top: 12px;
+      text-align: center;
+    }
+
+    /* ─── Dashboard ─────────────────────────── */
+    #dashboardPanel {
+      display: none;
+      width: 100%;
+      max-width: 900px;
+      flex-direction: column;
+      gap: 28px;
+    }
+    #dashboardPanel.show { display: flex; }
+
+    .dash-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .dash-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .dash-title span { color: var(--accent); }
+    .dash-subtitle {
+      font-size: 12px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      margin-top: 4px;
+    }
+    .btn-logout {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: var(--font-body);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 680px) { .dash-grid { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .card-title {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    .card-title svg { width: 14px; height: 14px; }
+
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .check-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-top: 4px;
+    }
+    .check-field input[type="checkbox"] {
+      width: 16px; height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+    }
+    .check-field label {
+      font-size: 12px;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-family: var(--font-mono);
+    }
+
+    .save-bar {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .btn-save {
+      background: var(--accent);
+      color: #0a0a0a;
+      border: none;
+      border-radius: 8px;
+      padding: 13px 32px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: var(--font-body);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-save:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px rgba(200,255,61,0.35);
+    }
+
+    /* ─── Toast ─────────────────────────────── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      padding: 14px 22px;
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+      z-index: 999;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.35s, transform 0.35s;
+      pointer-events: none;
+    }
+    #toast.show { opacity: 1; transform: translateY(0); }
+    #toast.error { border-color: var(--red); }
+    #toast svg { width: 16px; height: 16px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Auth Panel -->
+  <div id="authPanel">
+    <div class="auth-logo">
+      <span>TU<em>X</em> &mdash; Control Center</span>
+    </div>
+    <p class="auth-subtitle">Enter your admin credentials to proceed</p>
+    <form id="authForm" onsubmit="handleAuth(event)">
+      <div class="field">
+        <label for="adminId">Admin ID</label>
+        <input type="text" id="adminId" required autocomplete="username" placeholder="Enter admin ID">
+      </div>
+      <div class="field">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" required autocomplete="current-password" placeholder="••••••••">
+      </div>
+      <button type="submit" class="btn-primary">
+        <i data-lucide="shield-check" style="width:16px;height:16px;"></i>
+        Authenticate
+      </button>
+      <div id="authError" class="auth-error">Invalid admin ID or password. Please try again.</div>
+    </form>
+  </div>
+
+  <!-- Dashboard Panel -->
+  <div id="dashboardPanel">
+    <div class="dash-header">
+      <div>
+        <div class="dash-title">TU<span>X</span> Control Center</div>
+        <div class="dash-subtitle">SMTP &amp; Social Media Configuration</div>
+      </div>
+      <button class="btn-logout" onclick="logout()">
+        <i data-lucide="log-out" style="width:14px;height:14px;"></i> Logout
+      </button>
+    </div>
+
+    <form id="configForm" onsubmit="saveConfiguration(event)">
+      <div class="dash-grid">
+
+        <!-- SMTP Card -->
+        <div class="card">
+          <div class="card-title">
+            <i data-lucide="mail"></i> SMTP Server
+          </div>
+          <div class="field">
+            <label for="smtpHost">SMTP Host</label>
+            <input type="text" id="smtpHost" required placeholder="smtp.gmail.com">
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="smtpPort">Port</label>
+              <input type="number" id="smtpPort" required placeholder="587">
+            </div>
+            <div class="field" style="justify-content: flex-end;">
+              <div class="check-field">
+                <input type="checkbox" id="smtpSecure">
+                <label for="smtpSecure">SSL / TLS</label>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label for="smtpUser">SMTP Username</label>
+            <input type="email" id="smtpUser" required placeholder="you@gmail.com">
+          </div>
+          <div class="field">
+            <label for="smtpPass">App Password</label>
+            <input type="password" id="smtpPass" placeholder="••••••••••••••••">
+          </div>
+          <div class="field">
+            <label for="smtpReceiver">Receiver Email</label>
+            <input type="email" id="smtpReceiver" required placeholder="you@email.com">
+          </div>
+        </div>
+
+        <!-- Socials Card -->
+        <div class="card">
+          <div class="card-title">
+            <i data-lucide="share-2"></i> Social Media Links
+          </div>
+          <div class="field">
+            <label for="socialGithub">GitHub URL</label>
+            <input type="url" id="socialGithub" required placeholder="https://github.com/...">
+          </div>
+          <div class="field">
+            <label for="socialLinkedin">LinkedIn URL</label>
+            <input type="url" id="socialLinkedin" required placeholder="https://linkedin.com/in/...">
+          </div>
+          <div class="field">
+            <label for="socialInstagram">Instagram URL</label>
+            <input type="url" id="socialInstagram" placeholder="https://instagram.com/...">
+          </div>
+          <div class="field">
+            <label for="socialEmail">Contact Email</label>
+            <input type="email" id="socialEmail" required placeholder="you@email.com">
+          </div>
+        </div>
+
+      </div><!-- /dash-grid -->
+
+      <div class="save-bar" style="margin-top: 20px;">
+        <button type="submit" class="btn-save">
+          <i data-lucide="save" style="width:16px;height:16px;"></i>
+          Save Configuration
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast">
+    <i data-lucide="check-circle" id="toastIcon"></i>
+    <span id="toastMsg">Saved</span>
+  </div>
+
+  <script src="/admin.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

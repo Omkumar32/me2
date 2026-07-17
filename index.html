@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Om Kumar — BCA Student & Full Stack Web Developer from Ranchi, Jharkhand. Skilled in JavaScript, Node.js, MongoDB, C, C++. Seeking internship opportunities.">
+  <title>Om Kumar — Full Stack Web Developer</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- CDNs for Animations and Icons -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.415.0/dist/umd/lucide.min.js" defer></script>
+</head>
+<body>
+
+  <!-- Custom Cursor Glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+  
+  <!-- Ambient Audio Indicator (Cinematic vibe) -->
+  <div class="sound-control-wrap" id="soundControl">
+    <button class="sound-btn" aria-label="Toggle ambient soundtrack">
+      <span class="sound-wave">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </span>
+      <span class="sound-text">AUDIO</span>
+    </button>
+  </div>
+
+  <!-- Vertical Left Sidebar Navigation -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-text">TU<span style="color: var(--primary);">X</span></span>
+    </div>
+    
+    <div class="sidebar-links" id="sidebarLinks">
+      <div class="sidebar-indicator" id="sidebarIndicator"></div>
+      <a href="#home" class="sidebar-link active" data-sec="home">
+        <i data-lucide="home"></i>
+        <span>Home</span>
+      </a>
+      <a href="#about" class="sidebar-link" data-sec="about">
+        <i data-lucide="user"></i>
+        <span>About</span>
+      </a>
+      <a href="#skills" class="sidebar-link" data-sec="skills">
+        <i data-lucide="cpu"></i>
+        <span>Skills</span>
+      </a>
+      <a href="#projects" class="sidebar-link" data-sec="projects">
+        <i data-lucide="briefcase"></i>
+        <span>Projects</span>
+      </a>
+      <a href="#experience" class="sidebar-link" data-sec="experience">
+        <i data-lucide="calendar"></i>
+        <span>Experience</span>
+      </a>
+      <a href="#github-stats" class="sidebar-link" data-sec="github-stats">
+        <i data-lucide="github"></i>
+        <span>GitHub</span>
+      </a>
+      <a href="#contact" class="sidebar-link" data-sec="contact">
+        <i data-lucide="mail"></i>
+        <span>Contact</span>
+      </a>
+    </div>
+
+    <div class="sidebar-theme">
+      <button class="theme-btn" aria-label="Toggle theme">
+        <i data-lucide="sun" class="sun-icon"></i>
+        <i data-lucide="moon" class="moon-icon active"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Top Right Connect Header -->
+  <div class="top-connect-header">
+    <span class="connect-label font-mono">Let's connect</span>
+    <div class="connect-socials">
+      <a href="https://github.com/Omkumar32" target="_blank" rel="noopener" class="connect-circle-btn btn-magnetic" aria-label="GitHub">
+        <i data-lucide="github"></i>
+      </a>
+      <a href="https://www.linkedin.com/in/om-kumar-07441728a/" target="_blank" rel="noopener" class="connect-circle-btn btn-magnetic" aria-label="LinkedIn">
+        <i data-lucide="linkedin"></i>
+      </a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="connect-circle-btn btn-magnetic" aria-label="Instagram">
+        <i data-lucide="instagram"></i>
+      </a>
+      <a href="mailto:omkumar4138@email.com" class="connect-circle-btn btn-magnetic" aria-label="Email">
+        <i data-lucide="mail"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Floating Bottom Navigation for Mobile -->
+  <nav class="mobile-bottom-nav">
+    <a href="#home" class="mobile-nav-item active" data-sec="home">
+      <i data-lucide="home"></i>
+      <span>Home</span>
+    </a>
+    <a href="#about" class="mobile-nav-item" data-sec="about">
+      <i data-lucide="user"></i>
+      <span>About</span>
+    </a>
+    <a href="#skills" class="mobile-nav-item" data-sec="skills">
+      <i data-lucide="code-2"></i>
+      <span>Skills</span>
+    </a>
+    <a href="#projects" class="mobile-nav-item" data-sec="projects">
+      <i data-lucide="folder-git-2"></i>
+      <span>Projects</span>
+    </a>
+    <a href="#contact" class="mobile-nav-item" data-sec="contact">
+      <i data-lucide="message-square"></i>
+      <span>Contact</span>
+    </a>
+  </nav>
+
+  <!-- Main Body Content Area (Shifted right to accommodate the sidebar) -->
+  <main class="main-content">
+
+    <!-- Hero Section -->
+    <header class="hero-section" id="home">
+      <!-- Cinematic Background Layers -->
+      <div class="hero-bg-container">
+        <!-- Zoomable Background Image -->
+        <div class="hero-bg-image" id="heroBgImage"></div>
+        
+        <!-- Fog & Glow -->
+        <div class="hero-fog"></div>
+        <div class="hero-light-ray ray-1"></div>
+        <div class="hero-light-ray ray-2"></div>
+        
+        <!-- Canvas Overlay Systems -->
+        <canvas class="particles-canvas" id="particlesCanvas"></canvas>
+        <canvas class="circuits-canvas" id="circuitsCanvas"></canvas>
+      </div>
+
+      <!-- Hero Dashboard Grid -->
+      <div class="hero-container">
+        
+        <!-- Hero Left Column -->
+        <div class="hero-left">
+          <div class="status-indicator init-fade">
+            <span class="status-dot pulsing"></span>
+            <span>Open to Internships &amp; Entry-Level Roles</span>
+          </div>
+          
+          <div class="hero-greet init-fade">Hi, I'm</div>
+          <h1 class="hero-name init-fade">Om Kumar</h1>
+          
+          <h2 class="hero-tagline init-fade">
+            I build digital products that <span class="highlight">solve problems.</span>
+          </h2>
+          
+          <p class="hero-description init-fade">
+            I design and develop fast, responsive, and user-focused web applications using modern technologies. Passionate about creating clean interfaces, scalable backends, and seamless digital experiences.
+          </p>
+          
+          <div class="hero-buttons init-fade">
+            <a href="#projects" class="btn btn-view-work btn-magnetic">
+              <span>View My Work</span>
+              <i data-lucide="arrow-right"></i>
+            </a>
+            <a href="#contact" class="btn btn-talk btn-magnetic">
+              <span>Let's Talk</span>
+              <i data-lucide="message-square"></i>
+            </a>
+            <a href="resume.pdf" download="Om_Kumar_Resume.pdf" class="btn btn-download-hero btn-magnetic">
+              <i data-lucide="download"></i>
+              <span>Resume</span>
+            </a>
+          </div>
+
+          <!-- Featured Projects Row (Under buttons) -->
+          <div class="hero-featured-projects init-fade">
+            <div class="featured-projects-header">
+              <div class="header-title">
+                <span class="green-bullet"></span>
+                <span>Featured Projects</span>
+              </div>
+              <a href="#projects" class="view-all-link">
+                <span>View all projects</span>
+                <i data-lucide="arrow-right"></i>
+              </a>
+            </div>
+            
+            <div class="featured-projects-row">
+              <!-- Card 1 -->
+              <div class="mini-project-card glass-panel tilt-element">
+                <div class="mini-card-glow"></div>
+                <div class="mini-card-icon cricket">
+                  <i data-lucide="target"></i>
+                </div>
+                <div class="mini-card-info">
+                  <h4 class="mini-card-title">Cricket Tournament</h4>
+                  <div class="mini-card-tags">
+                    <span>Next.js</span>
+                    <span>MongoDB</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Card 2 -->
+              <div class="mini-project-card glass-panel tilt-element">
+                <div class="mini-card-glow"></div>
+                <div class="mini-card-icon school">
+                  <i data-lucide="graduation-cap"></i>
+                </div>
+                <div class="mini-card-info">
+                  <h4 class="mini-card-title">School ERP System</h4>
+                  <div class="mini-card-tags">
+                    <span>React</span>
+                    <span>Node.js</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Card 3 -->
+              <div class="mini-project-card glass-panel tilt-element">
+                <div class="mini-card-glow"></div>
+                <div class="mini-card-icon pdf">
+                  <i data-lucide="file-text"></i>
+                </div>
+                <div class="mini-card-info">
+                  <h4 class="mini-card-title">PDF Tools</h4>
+                  <div class="mini-card-tags">
+                    <span>Next.js</span>
+                    <span>Express</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Card 4 -->
+              <div class="mini-project-card glass-panel tilt-element">
+                <div class="mini-card-glow"></div>
+                <div class="mini-card-icon med">
+                  <i data-lucide="pill"></i>
+                </div>
+                <div class="mini-card-info">
+                  <h4 class="mini-card-title">Medication Tracker</h4>
+                  <div class="mini-card-tags">
+                    <span>MERN</span>
+                    <span>MongoDB</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Hero Right Column -->
+        <div class="hero-right">
+          
+          <!-- Handwritten Annotation -->
+          <div class="handwritten-annotation init-fade">
+            <span class="handwritten-text">Let's create something amazing together!</span>
+            <svg class="handwritten-arrow" width="100" height="50" viewBox="0 0 100 50">
+              <path d="M10,10 Q50,40 90,10" fill="none" stroke="#c8ff3d" stroke-width="2" stroke-dasharray="3,3" />
+              <path d="M80,8 L92,10 L84,22" fill="none" stroke="#c8ff3d" stroke-width="2" />
+            </svg>
+          </div>
+
+          <!-- Terminal Window Widget -->
+          <div class="glass-panel panel-terminal-new floating-element init-fade" data-speed="1.2">
+            <div class="panel-header-new">
+              <span class="panel-title-new">Currently working on</span>
+              <div class="header-dots">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+            </div>
+            <div class="panel-content-new code-font">
+              <p class="code-line"><span class="c-keyword">const</span> developer = {</p>
+              <p class="code-line indent"><span class="c-property">name</span>: <span class="c-string">"Om Kumar"</span>,</p>
+              <p class="code-line indent"><span class="c-property">role</span>: <span class="c-string">"Full Stack Web Developer"</span>,</p>
+              <p class="code-line indent"><span class="c-property">college</span>: <span class="c-string">"BCA @ K.D. Rungta"</span>,</p>
+              <p class="code-line indent"><span class="c-property">passion</span>: <span class="c-string">"Building impactful digital experiences"</span></p>
+              <p class="code-line">};</p>
+              <p class="code-line comment-line">&gt; Building the future... <span class="blinking-cursor">|</span></p>
+            </div>
+          </div>
+
+
+
+          <!-- Stats Grid Widget -->
+          <div class="glass-panel stats-panel-new floating-element init-fade" data-speed="1.6">
+            <div class="stats-grid-new">
+              <div class="stats-item-new">
+                <span class="stats-number counter-number" data-target="10">0</span><span class="stats-plus">+</span>
+                <span class="stats-label">Projects Completed</span>
+              </div>
+              
+              <div class="stats-item-new">
+                <span class="stats-number counter-number" data-target="2">0</span><span class="stats-plus">+</span>
+                <span class="stats-label">Years of Learning</span>
+              </div>
+              
+              <!-- Center Circular badge overlay -->
+              <div class="stats-center-badge">
+                <div class="badge-ring">
+                  <i data-lucide="code"></i>
+                </div>
+              </div>
+              
+              <div class="stats-item-new">
+                <span class="stats-number counter-number" data-target="5">0</span><span class="stats-plus">K+</span>
+                <span class="stats-label">Lines of Code</span>
+              </div>
+              
+              <div class="stats-item-new">
+                <span class="stats-number counter-number" data-target="100">0</span><span class="stats-percent">%</span>
+                <span class="stats-label">Passion & Dedication</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </header>
+
+    <!-- About Section -->
+    <section class="section about-section" id="about">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag font-mono">01 // IDENTITY</span>
+          <h2 class="section-title">Futuristic Bio & Philosophy</h2>
+          <div class="section-line"></div>
+        </div>
+        
+        <div class="about-grid">
+          <div class="about-text-column scroll-reveal">
+            <h3 class="about-heading">Building Digital Experiences That Matter</h3>
+            <p class="about-desc">
+              I'm Om Kumar, a Full Stack Web Developer with a passion for crafting elegant, scalable, and impactful web applications. I enjoy turning complex ideas into seamless digital experiences that combine clean design with powerful functionality.
+            </p>
+            <p class="about-desc">
+              From intuitive front-end interfaces to robust back-end systems, I focus on writing maintainable code, optimizing performance, and building products that users genuinely enjoy. Learning is a continuous journey, and I'm always experimenting with new technologies to stay ahead in the ever-evolving world of software development.
+            </p>
+            <p class="about-desc">
+              My mission is simple: build products that inspire, solve real problems, and leave a meaningful impact.
+            </p>
+            
+            <div class="about-metrics">
+              <div class="metric-card glass-panel">
+                <span class="metric-value">BCA</span>
+                <span class="metric-label">2023–2026</span>
+              </div>
+              <div class="metric-card glass-panel">
+                <span class="metric-value">Ranchi</span>
+                <span class="metric-label">Jharkhand, India</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="about-visual-column scroll-reveal">
+            <!-- Glass Bio Card -->
+            <div class="glass-panel profile-card tilt-element">
+              <div class="profile-glow"></div>
+              <div class="profile-header">
+                <div class="profile-meta">
+                  <span class="profile-name">Om Kumar</span>
+                  <span class="profile-title">Full Stack Web Developer</span>
+                </div>
+                <span class="status-dot pulsing"></span>
+              </div>
+              
+              <ul class="profile-details font-mono">
+                <li><span class="lbl">EMAIL:</span> <span class="val">omkumar4138@email.com</span></li>
+                <li><span class="lbl">LOC:</span> <span class="val">Ranchi, Jharkhand, India</span></li>
+                <li><span class="lbl">LANGUAGE:</span> <span class="val">JS, C, C++, Java (Basic)</span></li>
+                <li><span class="lbl">COLLEGE:</span> <span class="val">K.D. Rungta, Raipur</span></li>
+                <li><span class="lbl">IDE:</span> <span class="val">VS Code</span></li>
+              </ul>
+
+              <div class="profile-action">
+                <a href="#contact" class="btn btn-outline btn-full btn-magnetic">Establish Connection</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section skills-section" id="skills">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag font-mono">02 // ARCHITECTURE</span>
+          <h2 class="section-title">Technical Capabilities</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <!-- Tech Stack Logos Panel -->
+        <div class="tech-stack-panel glass-panel scroll-reveal">
+          <div class="tech-stack-header">
+            <i data-lucide="layers" class="tech-stack-icon"></i>
+            <span class="tech-stack-title font-mono">TECH STACK</span>
+          </div>
+          <div class="tech-logos-marquee-wrapper">
+            <div class="tech-logos-marquee-track">
+              <!-- Original Row -->
+              <div class="tech-logos-row">
+                <!-- JavaScript -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle js-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <rect x="15" y="15" width="70" height="70" fill="#f7df1e" rx="4"/>
+                      <text x="78" y="76" font-family="'Inter', sans-serif" font-weight="900" font-size="36" fill="#000000" text-anchor="end">JS</text>
+                    </svg>
+                  </div>
+                  <span class="tech-name">JavaScript</span>
+                </div>
+                <!-- React -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle react-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <circle cx="50" cy="50" r="8" fill="#00d8ff"/>
+                      <ellipse cx="50" cy="50" rx="38" ry="14" fill="none" stroke="#00d8ff" stroke-width="3" transform="rotate(0 50 50)"/>
+                      <ellipse cx="50" cy="50" rx="38" ry="14" fill="none" stroke="#00d8ff" stroke-width="3" transform="rotate(60 50 50)"/>
+                      <ellipse cx="50" cy="50" rx="38" ry="14" fill="none" stroke="#00d8ff" stroke-width="3" transform="rotate(120 50 50)"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">React</span>
+                </div>
+                <!-- Next.js -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle next-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <circle cx="50" cy="50" r="40" fill="black" stroke="#ffffff" stroke-width="1"/>
+                      <path d="M35 30 L65 70 M65 30 L65 70" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                      <path d="M35 30 L35 70" stroke="url(#nextLinear)" stroke-width="5" stroke-linecap="round"/>
+                      <defs>
+                        <linearGradient id="nextLinear" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="#ffffff"/>
+                          <stop offset="100%" stop-color="#333333"/>
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <span class="tech-name">Next.js</span>
+                </div>
+                <!-- TypeScript -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle ts-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <rect x="15" y="15" width="70" height="70" rx="6" fill="#3178c6"/>
+                      <text x="80" y="78" font-family="'Inter', sans-serif" font-weight="bold" font-size="34" fill="#ffffff" text-anchor="end">TS</text>
+                    </svg>
+                  </div>
+                  <span class="tech-name">TypeScript</span>
+                </div>
+                <!-- Node.js -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle node-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M50 15 L80 32 L80 68 L50 85 L20 68 L20 32 Z" fill="none" stroke="#68a063" stroke-width="4"/>
+                      <text x="50" y="58" font-family="'Inter', sans-serif" font-weight="bold" font-size="28" fill="#68a063" text-anchor="middle">JS</text>
+                    </svg>
+                  </div>
+                  <span class="tech-name">Node.js</span>
+                </div>
+                <!-- Express.js -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle express-glow">
+                    <span class="tech-text-logo">ex</span>
+                  </div>
+                  <span class="tech-name">Express.js</span>
+                </div>
+                <!-- MongoDB -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle mongo-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M50 15 C50 15 35 38 35 55 C35 68 42 78 50 85 C58 78 65 68 65 55 C65 38 50 15 50 15 Z" fill="#47a248" />
+                      <path d="M50 15 C50 15 48 38 48 55 C48 68 45 78 50 85 Z" fill="#3f8a40" />
+                    </svg>
+                  </div>
+                  <span class="tech-name">MongoDB</span>
+                </div>
+                <!-- SQL -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle sql-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <ellipse cx="50" cy="30" rx="30" ry="12" fill="none" stroke="#00758f" stroke-width="4"/>
+                      <path d="M20 30 V50 C20 56 35 62 50 62 C65 62 80 56 80 50 V30" fill="none" stroke="#00758f" stroke-width="4"/>
+                      <path d="M20 50 V70 C20 76 35 82 50 82 C65 82 80 76 80 70 V50" fill="none" stroke="#00758f" stroke-width="4"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">SQL</span>
+                </div>
+                <!-- C -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle c-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#a8b9cc" stroke-width="6"/>
+                      <path d="M68 32 C60 22 40 22 32 32 C22 42 22 58 32 68 C40 78 60 78 68 68" fill="none" stroke="#a8b9cc" stroke-width="8" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">C</span>
+                </div>
+                <!-- C++ -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle cpp-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#00599c" stroke-width="6"/>
+                      <path d="M52 35 C46 27 34 27 28 35 C20 43 20 57 28 65 C34 73 46 73 52 65" fill="none" stroke="#00599c" stroke-width="6" stroke-linecap="round"/>
+                      <path d="M58 50 H68 M63 45 V55 M72 50 H82 M77 45 V55" stroke="#00599c" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">C++</span>
+                </div>
+                <!-- Java -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle java-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M30 65 C40 72 60 72 70 65 C78 58 75 52 70 50 C60 48 40 50 30 52 C20 54 22 60 30 65 Z" fill="none" stroke="#ea2d2e" stroke-width="4"/>
+                      <path d="M35 50 C38 45 42 40 45 30 M45 48 C48 43 52 38 55 28 M55 50 C58 45 62 40 65 30" fill="none" stroke="#5382a1" stroke-width="4" stroke-linecap="round"/>
+                      <path d="M25 72 C35 78 65 78 75 72" fill="none" stroke="#5382a1" stroke-width="4"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">Java</span>
+                </div>
+                <!-- HTML5 -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle html-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M20 15 L80 15 L73 75 L50 85 L27 75 Z" fill="#e34f26"/>
+                      <path d="M50 15 L80 15 L73 75 L50 85 Z" fill="#f06529"/>
+                      <path d="M50 30 L35 30 L36 45 L50 45 L50 58 L38 55 L37 48 L27 48 L29 68 L50 74 Z" fill="#ececec"/>
+                      <path d="M50 30 L50 45 L64 45 L63 58 L50 62 L50 74 L71 68 L73 30 Z" fill="#ffffff"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">HTML5</span>
+                </div>
+                <!-- CSS3 -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle css-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M20 15 L80 15 L73 75 L50 85 L27 75 Z" fill="#1572b6"/>
+                      <path d="M50 15 L80 15 L73 75 L50 85 Z" fill="#33a9dc"/>
+                      <path d="M50 30 L32 30 L33 45 L50 45 L50 58 L38 55 L37 48 L27 48 L29 68 L50 74 Z" fill="#ececec"/>
+                      <path d="M50 30 L50 45 L64 45 L63 58 L50 62 L50 74 L71 68 L73 30 Z" fill="#ffffff"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">CSS3</span>
+                </div>
+                <!-- Git -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle git-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M50 15 L85 50 L50 85 L15 50 Z" fill="none" stroke="#f05032" stroke-width="4"/>
+                      <circle cx="50" cy="40" r="6" fill="#f05032"/>
+                      <circle cx="50" cy="65" r="6" fill="#f05032"/>
+                      <circle cx="65" cy="50" r="6" fill="#f05032"/>
+                      <path d="M50 46 V59 L61 53" fill="none" stroke="#f05032" stroke-width="3"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">Git</span>
+                </div>
+                <!-- VS Code -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle vscode-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M20 35 L45 15 L80 30 L20 80 L80 70 L45 85 Z" fill="none" stroke="#007acc" stroke-width="4" stroke-linejoin="round"/>
+                      <path d="M20 35 L80 70 M80 30 L20 80" stroke="#007acc" stroke-width="4" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">VS Code</span>
+                </div>
+                <!-- Postman -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle postman-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#ff6c37" stroke-width="4"/>
+                      <path d="M50 25 C63 25 70 35 70 50 C70 65 60 75 50 75 C40 75 30 65 30 50" fill="none" stroke="#ff6c37" stroke-width="4"/>
+                      <polygon points="50,15 60,30 40,30" fill="#ff6c37"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">Postman</span>
+                </div>
+              </div>
+
+              <!-- Duplicated Row for Infinite loop effect -->
+              <div class="tech-logos-row" aria-hidden="true">
+                <!-- JavaScript -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle js-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <rect x="15" y="15" width="70" height="70" fill="#f7df1e" rx="4"/>
+                      <text x="78" y="76" font-family="'Inter', sans-serif" font-weight="900" font-size="36" fill="#000000" text-anchor="end">JS</text>
+                    </svg>
+                  </div>
+                  <span class="tech-name">JavaScript</span>
+                </div>
+                <!-- React -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle react-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <circle cx="50" cy="50" r="8" fill="#00d8ff"/>
+                      <ellipse cx="50" cy="50" rx="38" ry="14" fill="none" stroke="#00d8ff" stroke-width="3" transform="rotate(0 50 50)"/>
+                      <ellipse cx="50" cy="50" rx="38" ry="14" fill="none" stroke="#00d8ff" stroke-width="3" transform="rotate(60 50 50)"/>
+                      <ellipse cx="50" cy="50" rx="38" ry="14" fill="none" stroke="#00d8ff" stroke-width="3" transform="rotate(120 50 50)"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">React</span>
+                </div>
+                <!-- Next.js -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle next-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <circle cx="50" cy="50" r="40" fill="black" stroke="#ffffff" stroke-width="1"/>
+                      <path d="M35 30 L65 70 M65 30 L65 70" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+                      <path d="M35 30 L35 70" stroke="url(#nextLinear)" stroke-width="5" stroke-linecap="round"/>
+                      <defs>
+                        <linearGradient id="nextLinear" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="#ffffff"/>
+                          <stop offset="100%" stop-color="#333333"/>
+                        </linearGradient>
+                      </defs>
+                    </svg>
+                  </div>
+                  <span class="tech-name">Next.js</span>
+                </div>
+                <!-- TypeScript -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle ts-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <rect x="15" y="15" width="70" height="70" rx="6" fill="#3178c6"/>
+                      <text x="80" y="78" font-family="'Inter', sans-serif" font-weight="bold" font-size="34" fill="#ffffff" text-anchor="end">TS</text>
+                    </svg>
+                  </div>
+                  <span class="tech-name">TypeScript</span>
+                </div>
+                <!-- Node.js -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle node-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M50 15 L80 32 L80 68 L50 85 L20 68 L20 32 Z" fill="none" stroke="#68a063" stroke-width="4"/>
+                      <text x="50" y="58" font-family="'Inter', sans-serif" font-weight="bold" font-size="28" fill="#68a063" text-anchor="middle">JS</text>
+                    </svg>
+                  </div>
+                  <span class="tech-name">Node.js</span>
+                </div>
+                <!-- Express.js -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle express-glow">
+                    <span class="tech-text-logo">ex</span>
+                  </div>
+                  <span class="tech-name">Express.js</span>
+                </div>
+                <!-- MongoDB -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle mongo-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M50 15 C50 15 35 38 35 55 C35 68 42 78 50 85 C58 78 65 68 65 55 C65 38 50 15 50 15 Z" fill="#47a248" />
+                      <path d="M50 15 C50 15 48 38 48 55 C48 68 45 78 50 85 Z" fill="#3f8a40" />
+                    </svg>
+                  </div>
+                  <span class="tech-name">MongoDB</span>
+                </div>
+                <!-- SQL -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle sql-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <ellipse cx="50" cy="30" rx="30" ry="12" fill="none" stroke="#00758f" stroke-width="4"/>
+                      <path d="M20 30 V50 C20 56 35 62 50 62 C65 62 80 56 80 50 V30" fill="none" stroke="#00758f" stroke-width="4"/>
+                      <path d="M20 50 V70 C20 76 35 82 50 82 C65 82 80 76 80 70 V50" fill="none" stroke="#00758f" stroke-width="4"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">SQL</span>
+                </div>
+                <!-- C -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle c-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#a8b9cc" stroke-width="6"/>
+                      <path d="M68 32 C60 22 40 22 32 32 C22 42 22 58 32 68 C40 78 60 78 68 68" fill="none" stroke="#a8b9cc" stroke-width="8" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">C</span>
+                </div>
+                <!-- C++ -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle cpp-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#00599c" stroke-width="6"/>
+                      <path d="M52 35 C46 27 34 27 28 35 C20 43 20 57 28 65 C34 73 46 73 52 65" fill="none" stroke="#00599c" stroke-width="6" stroke-linecap="round"/>
+                      <path d="M58 50 H68 M63 45 V55 M72 50 H82 M77 45 V55" stroke="#00599c" stroke-width="4" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">C++</span>
+                </div>
+                <!-- Java -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle java-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M30 65 C40 72 60 72 70 65 C78 58 75 52 70 50 C60 48 40 50 30 52 C20 54 22 60 30 65 Z" fill="none" stroke="#ea2d2e" stroke-width="4"/>
+                      <path d="M35 50 C38 45 42 40 45 30 M45 48 C48 43 52 38 55 28 M55 50 C58 45 62 40 65 30" fill="none" stroke="#5382a1" stroke-width="4" stroke-linecap="round"/>
+                      <path d="M25 72 C35 78 65 78 75 72" fill="none" stroke="#5382a1" stroke-width="4"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">Java</span>
+                </div>
+                <!-- HTML5 -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle html-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M20 15 L80 15 L73 75 L50 85 L27 75 Z" fill="#e34f26"/>
+                      <path d="M50 15 L80 15 L73 75 L50 85 Z" fill="#f06529"/>
+                      <path d="M50 30 L35 30 L36 45 L50 45 L50 58 L38 55 L37 48 L27 48 L29 68 L50 74 Z" fill="#ececec"/>
+                      <path d="M50 30 L50 45 L64 45 L63 58 L50 62 L50 74 L71 68 L73 30 Z" fill="#ffffff"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">HTML5</span>
+                </div>
+                <!-- CSS3 -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle css-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M20 15 L80 15 L73 75 L50 85 L27 75 Z" fill="#1572b6"/>
+                      <path d="M50 15 L80 15 L73 75 L50 85 Z" fill="#33a9dc"/>
+                      <path d="M50 30 L32 30 L33 45 L50 45 L50 58 L38 55 L37 48 L27 48 L29 68 L50 74 Z" fill="#ececec"/>
+                      <path d="M50 30 L50 45 L64 45 L63 58 L50 62 L50 74 L71 68 L73 30 Z" fill="#ffffff"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">CSS3</span>
+                </div>
+                <!-- Git -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle git-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M50 15 L85 50 L50 85 L15 50 Z" fill="none" stroke="#f05032" stroke-width="4"/>
+                      <circle cx="50" cy="40" r="6" fill="#f05032"/>
+                      <circle cx="50" cy="65" r="6" fill="#f05032"/>
+                      <circle cx="65" cy="50" r="6" fill="#f05032"/>
+                      <path d="M50 46 V59 L61 53" fill="none" stroke="#f05032" stroke-width="3"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">Git</span>
+                </div>
+                <!-- VS Code -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle vscode-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <path d="M20 35 L45 15 L80 30 L20 80 L80 70 L45 85 Z" fill="none" stroke="#007acc" stroke-width="4" stroke-linejoin="round"/>
+                      <path d="M20 35 L80 70 M80 30 L20 80" stroke="#007acc" stroke-width="4" stroke-linejoin="round"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">VS Code</span>
+                </div>
+                <!-- Postman -->
+                <div class="tech-logo-item">
+                  <div class="logo-circle postman-glow">
+                    <svg viewBox="0 0 100 100" class="tech-svg">
+                      <circle cx="50" cy="50" r="38" fill="none" stroke="#ff6c37" stroke-width="4"/>
+                      <path d="M50 25 C63 25 70 35 70 50 C70 65 60 75 50 75 C40 75 30 65 30 50" fill="none" stroke="#ff6c37" stroke-width="4"/>
+                      <polygon points="50,15 60,30 40,30" fill="#ff6c37"/>
+                    </svg>
+                  </div>
+                  <span class="tech-name">Postman</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills Navigation Slider Tab -->
+        <div class="skills-tab-nav scroll-reveal">
+          <button class="tab-btn active" data-tab="frontend">Languages &amp; Frontend</button>
+          <button class="tab-btn" data-tab="backend">Backend & DB</button>
+          <button class="tab-btn" data-tab="devops">Tools & Platforms</button>
+        </div>
+
+        <!-- Skills Grid Container -->
+        <div class="skills-grid scroll-reveal">
+          
+          <!-- Frontend Tab Pane -->
+          <div class="skills-pane active" id="frontend">
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="code"></i>JavaScript</span>
+                <span class="skill-pct">85%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="palette"></i>HTML5 / CSS3</span>
+                <span class="skill-pct">90%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 90%"></div>
+              </div>
+            </div>
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="cpu"></i>C / C++</span>
+                <span class="skill-pct">80%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 80%"></div>
+              </div>
+            </div>
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="box"></i>Java (Basic)</span>
+                <span class="skill-pct">65%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 65%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Backend Tab Pane -->
+          <div class="skills-pane" id="backend">
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="server"></i>Node.js / Express.js</span>
+                <span class="skill-pct">82%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 82%"></div>
+              </div>
+            </div>
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="database"></i>MongoDB</span>
+                <span class="skill-pct">80%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 80%"></div>
+              </div>
+            </div>
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="table"></i>SQL</span>
+                <span class="skill-pct">75%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 75%"></div>
+              </div>
+            </div>
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="arrow-right-left"></i>REST APIs</span>
+                <span class="skill-pct">78%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 78%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tools Tab Pane -->
+          <div class="skills-pane" id="devops">
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="git-branch"></i>Git &amp; GitHub</span>
+                <span class="skill-pct">85%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 85%"></div>
+              </div>
+            </div>
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="code-2"></i>VS Code</span>
+                <span class="skill-pct">92%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 92%"></div>
+              </div>
+            </div>
+            <div class="skill-item glass-panel">
+              <div class="skill-meta">
+                <span class="skill-name"><i data-lucide="zap"></i>Postman</span>
+                <span class="skill-pct">80%</span>
+              </div>
+              <div class="skill-bar-bg">
+                <div class="skill-bar-fill" style="width: 80%"></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Detailed Projects Section -->
+    <section class="section projects-section" id="projects">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag font-mono">03 // PRODUCTIONS</span>
+          <h2 class="section-title">Selected Projects</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="projects-grid">
+          
+          <!-- Project Card 1: Cricket Tournament -->
+          <div class="project-card glass-panel tilt-element scroll-reveal">
+            <div class="project-glow"></div>
+            <div class="project-image-wrap">
+              <div class="project-visual-sim p-sim-1">
+                <div class="grid-overlay"></div>
+                <div class="animated-nodes"></div>
+              </div>
+              <div class="project-category font-mono">NEXT.JS // MONGODB</div>
+            </div>
+            <div class="project-info">
+              <h3 class="project-card-title">Cricket Tournament Manager</h3>
+              <p class="project-card-desc">
+                A full-featured cricket tournament management platform with team registrations, live score updates, and bracket management.
+              </p>
+              <div class="project-tech font-mono">
+                <span>Next.js</span>
+                <span>MongoDB</span>
+                <span>Node.js</span>
+                <span>Express</span>
+              </div>
+              <div class="project-actions">
+                <a href="https://github.com/Omkumar32" target="_blank" rel="noopener" class="btn btn-icon-link" aria-label="Github Repo">
+                  <i data-lucide="github"></i><span>CODE</span>
+                </a>
+                <a href="#" class="btn btn-project-cta" aria-label="Live Site">
+                  <span>LAUNCH SITE</span><i data-lucide="arrow-up-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project Card 2: School ERP -->
+          <div class="project-card glass-panel tilt-element scroll-reveal">
+            <div class="project-glow"></div>
+            <div class="project-image-wrap">
+              <div class="project-visual-sim p-sim-2">
+                <div class="grid-overlay"></div>
+                <div class="animated-nodes"></div>
+              </div>
+              <div class="project-category font-mono">REACT // NODE.JS</div>
+            </div>
+            <div class="project-info">
+              <h3 class="project-card-title">School ERP System</h3>
+              <p class="project-card-desc">
+                Comprehensive school management system handling student records, attendance, fee management, and teacher-student communication.
+              </p>
+              <div class="project-tech font-mono">
+                <span>React</span>
+                <span>Node.js</span>
+                <span>MongoDB</span>
+                <span>Express</span>
+              </div>
+              <div class="project-actions">
+                <a href="https://github.com/Omkumar32" target="_blank" rel="noopener" class="btn btn-icon-link" aria-label="Github Repo">
+                  <i data-lucide="github"></i><span>CODE</span>
+                </a>
+                <a href="#" class="btn btn-project-cta" aria-label="Live Site">
+                  <span>LAUNCH SITE</span><i data-lucide="arrow-up-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project Card 3: PDF Tools -->
+          <div class="project-card glass-panel tilt-element scroll-reveal">
+            <div class="project-glow"></div>
+            <div class="project-image-wrap">
+              <div class="project-visual-sim p-sim-3">
+                <div class="grid-overlay"></div>
+                <div class="animated-nodes"></div>
+              </div>
+              <div class="project-category font-mono">NEXT.JS // EXPRESS</div>
+            </div>
+            <div class="project-info">
+              <h3 class="project-card-title">PDF Tools Suite</h3>
+              <p class="project-card-desc">
+                A web-based PDF utility toolkit supporting merging, splitting, compression, and format conversion with a clean drag-and-drop UI.
+              </p>
+              <div class="project-tech font-mono">
+                <span>Next.js</span>
+                <span>Express</span>
+                <span>Node.js</span>
+                <span>MongoDB</span>
+              </div>
+              <div class="project-actions">
+                <a href="https://github.com/Omkumar32" target="_blank" rel="noopener" class="btn btn-icon-link" aria-label="Github Repo">
+                  <i data-lucide="github"></i><span>CODE</span>
+                </a>
+                <a href="#" class="btn btn-project-cta" aria-label="Live Site">
+                  <span>LAUNCH SITE</span><i data-lucide="arrow-up-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section services-section" id="services">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag font-mono">04 // SERVICES</span>
+          <h2 class="section-title">Futuristic Offerings</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="services-grid">
+          <!-- Service Card 1 -->
+          <div class="service-card glass-panel scroll-reveal">
+            <div class="service-icon-wrap">
+              <i data-lucide="code-2"></i>
+            </div>
+            <h3 class="service-title">Full Stack Architecting</h3>
+            <p class="service-desc">Designing scalable, secure, and lightning-fast web infrastructure using enterprise-grade paradigms.</p>
+          </div>
+
+          <!-- Service Card 2 -->
+          <div class="service-card glass-panel scroll-reveal">
+            <div class="service-icon-wrap">
+              <i data-lucide="layers"></i>
+            </div>
+            <h3 class="service-title">Aesthetic UI/UX Design</h3>
+            <p class="service-desc">Blending minimalist aesthetics with responsive grid systems, tactile micro-interactions, and visual harmony.</p>
+          </div>
+
+          <!-- Service Card 3 -->
+          <div class="service-card glass-panel scroll-reveal">
+            <div class="service-icon-wrap">
+              <i data-lucide="gauge"></i>
+            </div>
+            <h3 class="service-title">Next-Level Optimizations</h3>
+            <p class="service-desc">Auditing, debugging and refactoring architectures to achieve sub-second load times and 100 lighthouse scores.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience Timeline Section -->
+    <section class="section timeline-section" id="experience">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag font-mono">05 // CHRONOLOGY</span>
+          <h2 class="section-title">Timeline & History</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="timeline-wrap">
+          <div class="timeline-center-line">
+            <div class="timeline-progress-line" id="timelineProgress"></div>
+          </div>
+          
+          <!-- Timeline Item 1: BCA -->
+          <div class="timeline-item scroll-reveal left">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card glass-panel">
+              <div class="timeline-date font-mono">2023 — 2026</div>
+              <h3 class="timeline-title">Bachelor of Computer Applications (BCA)</h3>
+              <span class="timeline-company font-mono">K.D. Rungta College of Science &amp; Technology, Raipur, CG</span>
+              <p class="timeline-text">
+                Pursuing BCA with a focus on Full Stack Web Development, algorithms, and database management. Actively building projects using MERN stack and exploring modern web technologies.
+              </p>
+            </div>
+          </div>
+
+          <!-- Timeline Item 2: 12th -->
+          <div class="timeline-item scroll-reveal right">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card glass-panel">
+              <div class="timeline-date font-mono">2020 — 2022</div>
+              <h3 class="timeline-title">Higher Secondary Education (12th — Science Stream)</h3>
+              <span class="timeline-company font-mono">Guru Gobind Singh Public School, Kamre, Ranchi, Jharkhand</span>
+              <p class="timeline-text">
+                Completed 12th with Science stream, building a strong foundation in mathematics and logical thinking that now drives my approach to problem-solving in code.
+              </p>
+            </div>
+          </div>
+
+          <!-- Timeline Item 3: Self-Learning -->
+          <div class="timeline-item scroll-reveal left">
+            <div class="timeline-dot"></div>
+            <div class="timeline-card glass-panel">
+              <div class="timeline-date font-mono">2022 — Present</div>
+              <h3 class="timeline-title">Self-Taught Full Stack Developer</h3>
+              <span class="timeline-company font-mono">Independent Projects &amp; Open Source</span>
+              <p class="timeline-text">
+                Built multiple real-world projects including a Cricket Tournament Manager, School ERP, PDF Tools, and a Medication Tracker — honing skills in React, Node.js, MongoDB, and Express.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GitHub Stats Section -->
+    <section class="section github-section" id="github-stats">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag font-mono">06 // DEPLOYMENT</span>
+          <h2 class="section-title">Open Source Contributions</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="github-dashboard glass-panel scroll-reveal">
+          <div class="gh-header">
+            <div class="gh-user">
+              <i data-lucide="github" class="gh-icon"></i>
+              <div>
+                <h3 class="gh-name">Omkumar32</h3>
+                <span class="gh-url font-mono">github.com/Omkumar32</span>
+              </div>
+            </div>
+            <div class="gh-stats-summary font-mono">
+              <a href="https://github.com/Omkumar32" target="_blank" rel="noopener" style="color:inherit;">VIEW PROFILE →</a>
+            </div>
+          </div>
+
+          <!-- Dynamic Calendar Grid -->
+          <div class="gh-calendar-wrap">
+            <span class="calendar-title font-mono">CONTRIBUTIONS // 365_DAYS</span>
+            <div class="gh-calendar-grid" id="githubGrid">
+              <!-- Dynamically populated grid of commits -->
+            </div>
+            <div class="gh-calendar-legend font-mono">
+              <span>Less</span>
+              <span class="leg-box lvl-0"></span>
+              <span class="leg-box lvl-1"></span>
+              <span class="leg-box lvl-2"></span>
+              <span class="leg-box lvl-3"></span>
+              <span class="leg-box lvl-4"></span>
+              <span>More</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact-section" id="contact">
+      <div class="container">
+        <div class="section-header scroll-reveal">
+          <span class="section-tag font-mono">07 // COMMUNICATIONS</span>
+          <h2 class="section-title">Establish Connection</h2>
+          <div class="section-line"></div>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Info Column -->
+          <div class="contact-info-column scroll-reveal">
+            <h3 class="contact-subtitle">Let's build something epic</h3>
+            <p class="contact-desc">
+              Whether you want to build a high-performance web app, discuss design, or just say hello—my transmission line is always open.
+            </p>
+
+            <div class="contact-methods font-mono">
+              <div class="method-item glass-panel">
+                <i data-lucide="mail"></i>
+                <div>
+                  <span class="m-lbl">EMAIL</span>
+                  <a href="mailto:omkumar4138@email.com" class="m-val">omkumar4138@email.com</a>
+                </div>
+              </div>
+              <div class="method-item glass-panel">
+                <i data-lucide="phone"></i>
+                <div>
+                  <span class="m-lbl">PHONE</span>
+                  <span class="m-val">+91 87097 89641</span>
+                </div>
+              </div>
+              <div class="method-item glass-panel">
+                <i data-lucide="map-pin"></i>
+                <div>
+                  <span class="m-lbl">LOCATION</span>
+                  <span class="m-val">Ranchi, Jharkhand, India</span>
+                </div>
+              </div>
+              <div class="method-item glass-panel">
+                <i data-lucide="linkedin"></i>
+                <div>
+                  <span class="m-lbl">LINKEDIN</span>
+                  <a href="https://www.linkedin.com/in/om-kumar-07441728a/" target="_blank" rel="noopener" class="m-val">om-kumar-07441728a</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Form Column -->
+          <div class="contact-form-column scroll-reveal">
+            <form class="contact-form glass-panel" id="contactForm">
+              <div class="form-row">
+                <div class="input-group">
+                  <input type="text" id="formName" required placeholder=" ">
+                  <label for="formName">NAME</label>
+                  <span class="bar"></span>
+                </div>
+                <div class="input-group">
+                  <input type="email" id="formEmail" required placeholder=" ">
+                  <label for="formEmail">EMAIL</label>
+                  <span class="bar"></span>
+                </div>
+              </div>
+              <div class="input-group full-width">
+                <input type="text" id="formSubject" required placeholder=" ">
+                <label for="formSubject">SUBJECT</label>
+                <span class="bar"></span>
+              </div>
+              <div class="input-group full-width">
+                <textarea id="formMessage" required rows="5" placeholder=" "></textarea>
+                <label for="formMessage">MESSAGE TRANSMISSION</label>
+                <span class="bar"></span>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-full btn-magnetic">
+                <span>Send Message</span>
+                <i data-lucide="send"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-top">
+          <a href="#home" class="footer-logo">
+            <img src="tux-logo.png" alt="TUX Logo" class="logo-img">
+            <span>TU<span style="color: var(--primary);">X</span></span>
+          </a>
+          <div class="footer-socials">
+            <a href="https://github.com/Omkumar32" target="_blank" rel="noopener" class="social-link" aria-label="GitHub"><i data-lucide="github"></i></a>
+            <a href="https://www.linkedin.com/in/om-kumar-07441728a/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+            <a href="https://instagram.com" target="_blank" rel="noopener" class="social-link" aria-label="Instagram"><i data-lucide="instagram"></i></a>
+            <a href="mailto:omkumar4138@email.com" class="social-link" aria-label="Email"><i data-lucide="mail"></i></a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p class="copyright">&copy; 2026 Om Kumar (TUX). All rights reserved.</p>
+          <p class="designer font-mono">DESIGNED & BUILT BY TU<span style="color: var(--primary);">X</span></p>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- Background Audio Element -->
+  <audio id="ambientAudio" loop src="https://assets.mixkit.co/music/preview/mixkit-retro-futurism-150.mp3"></audio>
+
+  <!-- Main Application Script -->
+  <script src="app.js" defer></script>
+</body>
+</html>
