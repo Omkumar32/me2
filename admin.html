@@ -258,6 +258,162 @@
       box-shadow: 0 0 20px rgba(200,255,61,0.35);
     }
 
+    /* ─── Project Management ─────────────────── */
+    .project-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .project-item:hover {
+      border-color: rgba(200, 255, 61, 0.2);
+      background: rgba(255,255,255,0.03);
+    }
+    .project-item-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+    .project-item-category {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--accent);
+      margin-top: 4px;
+      opacity: 0.8;
+    }
+    .btn-delete-proj {
+      background: rgba(255, 74, 74, 0.05);
+      border: 1px solid rgba(255, 74, 74, 0.1);
+      color: var(--red);
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-delete-proj:hover {
+      background: rgba(255, 74, 74, 0.15);
+      border-color: rgba(255, 74, 74, 0.3);
+    }
+    .add-project-box {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 20px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+    .add-project-title {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .btn-add-proj {
+      padding: 12px 28px;
+      background: var(--accent);
+      color: #0a0a0a;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      width: auto;
+    }
+    .btn-add-proj:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+      box-shadow: 0 0 20px rgba(200,255,61,0.35);
+    }
+    .full-width-card {
+      grid-column: span 2;
+    }
+    @media (max-width: 680px) {
+      .full-width-card {
+        grid-column: span 1;
+      }
+    }
+    .field textarea {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 13px 16px;
+      font-size: 14px;
+      font-family: var(--font-body);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+      resize: vertical;
+    }
+    .field textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(200,255,61,0.1);
+    }
+    .custom-file-upload {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px dashed var(--border);
+      border-radius: 8px;
+      padding: 28px 16px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.5px;
+      color: var(--text-dim);
+      transition: border-color 0.2s, background 0.2s, color 0.2s, box-shadow 0.2s;
+      text-align: center;
+      height: 120px;
+    }
+    .custom-file-upload:hover {
+      border-color: var(--accent);
+      background: rgba(200, 255, 61, 0.03);
+      color: var(--text);
+      box-shadow: 0 0 15px rgba(200, 255, 61, 0.05);
+    }
+    .custom-file-upload svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--text-dim);
+      transition: stroke 0.2s;
+    }
+    .custom-file-upload:hover svg {
+      stroke: var(--accent);
+    }
+
+    .add-project-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .add-project-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+    }
+
     /* ─── Toast ─────────────────────────────── */
     #toast {
       position: fixed;
@@ -382,6 +538,128 @@
           </div>
         </div>
 
+        <!-- Resume Card -->
+        <div class="card">
+          <div class="card-title">
+            <i data-lucide="file-text"></i> Upload Resume
+          </div>
+          <div class="field">
+            <label>Upload PDF Resume</label>
+            <label for="resumeFile" class="custom-file-upload" style="height: 100px; padding: 15px 10px;">
+              <i data-lucide="upload-cloud" style="width:20px;height:20px;"></i>
+              <span id="resume-upload-text">Choose PDF Resume</span>
+            </label>
+            <input type="file" id="resumeFile" accept="application/pdf" style="display: none;" onchange="updateResumeNameDisplay(this)">
+          </div>
+          <div style="margin-top: 10px;">
+            <button type="button" class="btn-add-proj" onclick="uploadResumeToServer()">
+              <i data-lucide="upload" style="width:14px;height:14px;"></i> Upload PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Profile Info Card -->
+        <div class="card">
+          <div class="card-title">
+            <i data-lucide="user"></i> Profile Info
+          </div>
+          <div class="field">
+            <label for="profName">Name</label>
+            <input type="text" id="profName" required placeholder="Om Kumar">
+          </div>
+          <div class="field">
+            <label for="profTitle">Title</label>
+            <input type="text" id="profTitle" required placeholder="Full Stack Web Developer">
+          </div>
+          <div class="field">
+            <label for="profEmail">Email</label>
+            <input type="email" id="profEmail" required placeholder="you@email.com">
+          </div>
+          <div class="field">
+            <label for="profLocation">Location</label>
+            <input type="text" id="profLocation" required placeholder="Ranchi, Jharkhand, India">
+          </div>
+          <div class="field">
+            <label for="profLanguages">Languages</label>
+            <input type="text" id="profLanguages" placeholder="JS, C, C++, Java (Basic)">
+          </div>
+          <div class="field">
+            <label for="profCollege">College</label>
+            <input type="text" id="profCollege" placeholder="K.D. Rungta, Raipur">
+          </div>
+          <div class="field">
+            <label for="profIde">IDE</label>
+            <input type="text" id="profIde" placeholder="VS Code">
+          </div>
+        </div>
+
+        <!-- Projects Card (Full Width) -->
+        <div class="card full-width-card">
+          <div class="card-title">
+            <i data-lucide="folder-git-2"></i> Manage Projects
+          </div>
+          
+          <!-- Current Projects List -->
+          <div id="projectsListContainer">
+            <!-- Rendered dynamically via JS -->
+          </div>
+
+          <!-- Add Project Sub-section -->
+          <div class="add-project-box">
+            <div class="add-project-title">Add New Project</div>
+            
+            <div class="add-project-grid">
+              <!-- Left Column -->
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="field">
+                  <label for="newProjTitle">Project Title</label>
+                  <input type="text" id="newProjTitle" placeholder="e.g. Cricket Tournament Manager">
+                </div>
+                <div class="field">
+                  <label for="newProjCategory">Category</label>
+                  <input type="text" id="newProjCategory" placeholder="e.g. NEXT.JS // MONGODB">
+                </div>
+                <div class="field">
+                  <label for="newProjTech">Tech Stack (comma separated)</label>
+                  <input type="text" id="newProjTech" placeholder="e.g. Next.js, MongoDB, Node.js, Express">
+                </div>
+                <div class="row2">
+                  <div class="field">
+                    <label for="newProjCodeUrl">Code URL (GitHub)</label>
+                    <input type="url" id="newProjCodeUrl" placeholder="https://github.com/...">
+                  </div>
+                  <div class="field">
+                    <label for="newProjLaunchUrl">Launch/Live URL</label>
+                    <input type="url" id="newProjLaunchUrl" placeholder="https://...">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Column -->
+              <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div class="field" style="flex: 1; display: flex; flex-direction: column;">
+                  <label for="newProjDesc">Description</label>
+                  <textarea id="newProjDesc" style="flex: 1; min-height: 100px;" placeholder="Brief description of the project..."></textarea>
+                </div>
+                <div class="field">
+                  <label>Upload Image (.png, .jpg, .webp)</label>
+                  <label for="newProjImageFile" class="custom-file-upload" style="height: 100px; padding: 15px 10px;">
+                    <i data-lucide="upload-cloud" style="width:20px;height:20px;"></i>
+                    <span id="file-upload-text">Choose file or drag & drop</span>
+                  </label>
+                  <input type="file" id="newProjImageFile" accept="image/png, image/jpeg, image/webp" style="display: none;" onchange="updateFileNameDisplay(this)">
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top: 20px;">
+              <button type="button" class="btn-add-proj" onclick="addNewProjectToList()">
+                <i data-lucide="plus" style="width:14px;height:14px;"></i> Add Project
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div><!-- /dash-grid -->
 
       <div class="save-bar" style="margin-top: 20px;">
@@ -399,7 +677,7 @@
     <span id="toastMsg">Saved</span>
   </div>
 
-  <script src="/admin.js"></script>
+  <script src="/admin.js?v=1.0.2"></script>
   <script>lucide.createIcons();</script>
 </body>
 </html>

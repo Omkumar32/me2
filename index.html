@@ -50,31 +50,31 @@
 
     <div class="sidebar-links" id="sidebarLinks">
       <div class="sidebar-indicator" id="sidebarIndicator"></div>
-      <a href="#home" class="sidebar-link active" data-sec="home">
+      <a href="/" class="sidebar-link active" data-sec="home">
         <i data-lucide="home"></i>
         <span>Home</span>
       </a>
-      <a href="#about" class="sidebar-link" data-sec="about">
+      <a href="/about" class="sidebar-link" data-sec="about">
         <i data-lucide="user"></i>
         <span>About</span>
       </a>
-      <a href="#skills" class="sidebar-link" data-sec="skills">
+      <a href="/skills" class="sidebar-link" data-sec="skills">
         <i data-lucide="cpu"></i>
         <span>Skills</span>
       </a>
-      <a href="#projects" class="sidebar-link" data-sec="projects">
+      <a href="/projects" class="sidebar-link" data-sec="projects">
         <i data-lucide="briefcase"></i>
         <span>Projects</span>
       </a>
-      <a href="#experience" class="sidebar-link" data-sec="experience">
+      <a href="/experience" class="sidebar-link" data-sec="experience">
         <i data-lucide="calendar"></i>
         <span>Experience</span>
       </a>
-      <a href="#github-stats" class="sidebar-link" data-sec="github-stats">
+      <a href="/github" class="sidebar-link" data-sec="github-stats">
         <i data-lucide="github"></i>
         <span>GitHub</span>
       </a>
-      <a href="#contact" class="sidebar-link" data-sec="contact">
+      <a href="/contact" class="sidebar-link" data-sec="contact">
         <i data-lucide="mail"></i>
         <span>Contact</span>
       </a>
@@ -112,23 +112,23 @@
 
   <!-- Floating Bottom Navigation for Mobile -->
   <nav class="mobile-bottom-nav">
-    <a href="#home" class="mobile-nav-item active" data-sec="home">
+    <a href="/" class="mobile-nav-item active" data-sec="home">
       <i data-lucide="home"></i>
       <span>Home</span>
     </a>
-    <a href="#about" class="mobile-nav-item" data-sec="about">
+    <a href="/about" class="mobile-nav-item" data-sec="about">
       <i data-lucide="user"></i>
       <span>About</span>
     </a>
-    <a href="#skills" class="mobile-nav-item" data-sec="skills">
+    <a href="/skills" class="mobile-nav-item" data-sec="skills">
       <i data-lucide="code-2"></i>
       <span>Skills</span>
     </a>
-    <a href="#projects" class="mobile-nav-item" data-sec="projects">
+    <a href="/projects" class="mobile-nav-item" data-sec="projects">
       <i data-lucide="folder-git-2"></i>
       <span>Projects</span>
     </a>
-    <a href="#contact" class="mobile-nav-item" data-sec="contact">
+    <a href="/contact" class="mobile-nav-item" data-sec="contact">
       <i data-lucide="message-square"></i>
       <span>Contact</span>
     </a>
@@ -152,6 +152,9 @@
         <!-- Canvas Overlay Systems -->
         <canvas class="particles-canvas" id="particlesCanvas"></canvas>
         <canvas class="circuits-canvas" id="circuitsCanvas"></canvas>
+        
+        <!-- Floating Tech Stack Layer -->
+        <div class="floating-tech-container" id="floatingTechContainer"></div>
       </div>
 
       <!-- Hero Dashboard Grid -->
@@ -168,7 +171,7 @@
           <h1 class="hero-name init-fade">Om Kumar</h1>
 
           <h2 class="hero-tagline init-fade">
-            I build digital products that <span class="highlight">solve problems.</span>
+            I build digital products that <br><span class="highlight">solve problems.</span>
           </h2>
 
           <p class="hero-description init-fade">
@@ -177,11 +180,11 @@
           </p>
 
           <div class="hero-buttons init-fade">
-            <a href="#projects" class="btn btn-view-work btn-magnetic">
+            <a href="/projects" class="btn btn-view-work btn-magnetic">
               <span>View My Work</span>
               <i data-lucide="arrow-right"></i>
             </a>
-            <a href="#contact" class="btn btn-talk btn-magnetic">
+            <a href="/contact" class="btn btn-talk btn-magnetic">
               <span>Let's Talk</span>
               <i data-lucide="message-square"></i>
             </a>
@@ -198,7 +201,7 @@
                 <span class="green-bullet"></span>
                 <span>Featured Projects</span>
               </div>
-              <a href="#projects" class="view-all-link">
+              <a href="/projects" class="view-all-link">
                 <span>View all projects</span>
                 <i data-lucide="arrow-right"></i>
               </a>
@@ -293,7 +296,7 @@
                   Kumar"</span>,</p>
               <p class="code-line indent"><span class="c-property">role</span>: <span class="c-string">"Full Stack Web
                   Developer"</span>,</p>
-              <p class="code-line indent"><span class="c-property">college</span>: <span class="c-string">"BCA @ K.D.
+              <p class="code-line indent"><span class="c-property">college</span>: <span class="c-string">"K.D.
                   Rungta"</span>,</p>
               <p class="code-line indent"><span class="c-property">passion</span>: <span class="c-string">"Building
                   impactful digital experiences"</span></p>
@@ -369,10 +372,6 @@
 
             <div class="about-metrics">
               <div class="metric-card glass-panel">
-                <span class="metric-value">BCA</span>
-                <span class="metric-label">2023–2026</span>
-              </div>
-              <div class="metric-card glass-panel">
                 <span class="metric-value">Ranchi</span>
                 <span class="metric-label">Jharkhand, India</span>
               </div>
@@ -400,7 +399,7 @@
               </ul>
 
               <div class="profile-action">
-                <a href="#contact" class="btn btn-outline btn-full btn-magnetic">Establish Connection</a>
+                <a href="/contact" class="btn btn-outline btn-full btn-magnetic">Establish Connection</a>
               </div>
             </div>
           </div>
@@ -963,109 +962,7 @@
         </div>
 
         <div class="projects-grid">
-
-          <!-- Project Card 1: Cricket Tournament -->
-          <div class="project-card glass-panel tilt-element scroll-reveal">
-            <div class="project-glow"></div>
-            <div class="project-image-wrap">
-              <div class="project-visual-sim p-sim-1">
-                <div class="grid-overlay"></div>
-                <div class="animated-nodes"></div>
-              </div>
-              <div class="project-category font-mono">NEXT.JS // MONGODB</div>
-            </div>
-            <div class="project-info">
-              <h3 class="project-card-title">Cricket Tournament Manager</h3>
-              <p class="project-card-desc">
-                A full-featured cricket tournament management platform with team registrations, live score updates, and
-                bracket management.
-              </p>
-              <div class="project-tech font-mono">
-                <span>Next.js</span>
-                <span>MongoDB</span>
-                <span>Node.js</span>
-                <span>Express</span>
-              </div>
-              <div class="project-actions">
-                <a href="https://github.com/Omkumar32" target="_blank" rel="noopener" class="btn btn-icon-link"
-                  aria-label="Github Repo">
-                  <i data-lucide="github"></i><span>CODE</span>
-                </a>
-                <a href="#" class="btn btn-project-cta" aria-label="Live Site">
-                  <span>LAUNCH SITE</span><i data-lucide="arrow-up-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Project Card 2: School ERP -->
-          <div class="project-card glass-panel tilt-element scroll-reveal">
-            <div class="project-glow"></div>
-            <div class="project-image-wrap">
-              <div class="project-visual-sim p-sim-2">
-                <div class="grid-overlay"></div>
-                <div class="animated-nodes"></div>
-              </div>
-              <div class="project-category font-mono">REACT // NODE.JS</div>
-            </div>
-            <div class="project-info">
-              <h3 class="project-card-title">School ERP System</h3>
-              <p class="project-card-desc">
-                Comprehensive school management system handling student records, attendance, fee management, and
-                teacher-student communication.
-              </p>
-              <div class="project-tech font-mono">
-                <span>React</span>
-                <span>Node.js</span>
-                <span>MongoDB</span>
-                <span>Express</span>
-              </div>
-              <div class="project-actions">
-                <a href="https://github.com/Omkumar32" target="_blank" rel="noopener" class="btn btn-icon-link"
-                  aria-label="Github Repo">
-                  <i data-lucide="github"></i><span>CODE</span>
-                </a>
-                <a href="#" class="btn btn-project-cta" aria-label="Live Site">
-                  <span>LAUNCH SITE</span><i data-lucide="arrow-up-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Project Card 3: PDF Tools -->
-          <div class="project-card glass-panel tilt-element scroll-reveal">
-            <div class="project-glow"></div>
-            <div class="project-image-wrap">
-              <div class="project-visual-sim p-sim-3">
-                <div class="grid-overlay"></div>
-                <div class="animated-nodes"></div>
-              </div>
-              <div class="project-category font-mono">NEXT.JS // EXPRESS</div>
-            </div>
-            <div class="project-info">
-              <h3 class="project-card-title">PDF Tools Suite</h3>
-              <p class="project-card-desc">
-                A web-based PDF utility toolkit supporting merging, splitting, compression, and format conversion with a
-                clean drag-and-drop UI.
-              </p>
-              <div class="project-tech font-mono">
-                <span>Next.js</span>
-                <span>Express</span>
-                <span>Node.js</span>
-                <span>MongoDB</span>
-              </div>
-              <div class="project-actions">
-                <a href="https://github.com/Omkumar32" target="_blank" rel="noopener" class="btn btn-icon-link"
-                  aria-label="Github Repo">
-                  <i data-lucide="github"></i><span>CODE</span>
-                </a>
-                <a href="#" class="btn btn-project-cta" aria-label="Live Site">
-                  <span>LAUNCH SITE</span><i data-lucide="arrow-up-right"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-
+          <!-- Dynamically rendered via app.js -->
         </div>
       </div>
     </section>
@@ -1308,7 +1205,7 @@
     <footer class="footer">
       <div class="container">
         <div class="footer-top">
-          <a href="#home" class="footer-logo">
+          <a href="/" class="footer-logo">
             <img src="tux-logo.png" alt="TUX Logo" class="logo-img">
             <span>TU<span style="color: var(--primary);">X</span></span>
           </a>

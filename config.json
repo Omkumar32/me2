@@ -3,14 +3,51 @@
     "host": "smtp.gmail.com",
     "port": 587,
     "secure": false,
-    "user": "omkumar4138@email.com",
-    "pass": "tuxadmin",
-    "receiver": "omkumar4138@email.com"
+    "user": "omkumar4138@gmail.com",
+    "pass": "eehg gruk haiq meow",
+    "receiver": "omkumar4138@gmail.com"
   },
   "socials": {
     "github": "https://github.com/Omkumar32",
     "linkedin": "https://www.linkedin.com/in/om-kumar-07441728a/",
     "instagram": "https://instagram.com",
-    "email": "omkumar4138@email.com"
-  }
+    "email": "omkumar4138@gmail.com"
+  },
+  "profile": {
+    "name": "Om Kumar",
+    "title": "Full Stack Web Developer",
+    "email": "omkumar4138@gmail.com",
+    "location": "Ranchi, Jharkhand, India",
+    "languages": "JS, C, C++, Java ",
+    "college": "K.D. Rungta, Raipur",
+    "ide": "VS Code"
+  },
+  "projects": [
+    {
+      "title": "Cricket Tournament Manager",
+      "category": "NEXT.JS // MONGODB",
+      "description": "A full-featured cricket tournament management platform with team registrations, live score updates, and bracket management.",
+      "tech": [
+        "Next.js",
+        "MongoDB",
+        "Node.js",
+        "Express"
+      ],
+      "codeUrl": "https://github.com/Omkumar32",
+      "launchUrl": "#"
+    },
+    {
+      "title": "School ERP System",
+      "category": "REACT // NODE.JS",
+      "description": "Comprehensive school management system handling student records, attendance, fee management, and teacher-student communication.",
+      "tech": [
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Express"
+      ],
+      "codeUrl": "https://github.com/Omkumar32",
+      "launchUrl": "#"
+    }
+  ]
 }

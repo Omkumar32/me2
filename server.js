@@ -3,13 +3,54 @@ const nodemailer = require('nodemailer');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
+
+// ─── Simple .env File Loader ─────────────────────────────
+const envPath = path.join(__dirname, '.env');
+if (fs.existsSync(envPath)) {
+  const envConfig = fs.readFileSync(envPath, 'utf8');
+  envConfig.split('\n').forEach(line => {
+    const trimmed = line.trim();
+    if (trimmed && !trimmed.startsWith('#')) {
+      const [key, ...values] = trimmed.split('=');
+      if (key && values.length > 0) {
+        process.env[key.trim()] = values.join('=').trim();
+      }
+    }
+  });
+}
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const CONFIG_PATH = path.join(__dirname, 'config.json');
 
+const ADMIN_USER = process.env.ADMIN_USER || "Admintux09";
+const ADMIN_PASS = process.env.ADMIN_PASS || "tux@#1234";
+
+// Active Auth Sessions (Token -> Created Timestamp)
+const activeTokens = new Map();
+
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+
+// Security Guard: Prevent direct public access to sensitive backend files
+app.use((req, res, next) => {
+  const forbiddenPatterns = [
+    '/config.json',
+    '/.env',
+    '/server.js',
+    '/package.json',
+    '/package-lock.json',
+    '/.gitignore',
+    '/.git'
+  ];
+
+  const reqPath = req.path.toLowerCase();
+  if (forbiddenPatterns.some(p => reqPath.endsWith(p) || reqPath.includes('/.git'))) {
+    return res.status(403).json({ error: "Access forbidden" });
+  }
+  next();
+});
 
 // Load config helper
 function loadConfig() {
@@ -22,8 +63,10 @@ function loadConfig() {
     console.error("Error loading config:", err);
   }
   return {
-    smtp: { host: "smtp.gmail.com", port: 587, secure: false, user: "", pass: "", receiver: "omkumar4138@email.com" },
-    socials: { github: "https://github.com/Omkumar32", linkedin: "https://www.linkedin.com/in/om-kumar-07441728a/", instagram: "https://instagram.com", email: "omkumar4138@email.com" }
+    smtp: { host: "smtp.gmail.com", port: 587, secure: false, user: "", pass: "", receiver: "omkumar4138@gmail.com" },
+    socials: { github: "https://github.com/Omkumar32", linkedin: "https://www.linkedin.com/in/om-kumar-07441728a/", instagram: "https://instagram.com", email: "omkumar4138@gmail.com" },
+    profile: { name: "Om Kumar", title: "Full Stack Web Developer", email: "omkumar4138@gmail.com", location: "Ranchi, Jharkhand, India", languages: "JS, C, C++, Java (Basic)", college: "K.D. Rungta, Raipur", ide: "VS Code" },
+    projects: []
   };
 }
 
@@ -38,10 +81,48 @@ function saveConfig(config) {
   }
 }
 
-// 1. GET Config API
+// ─── Authentication Middleware ───────────────────────────
+function requireAuth(req, res, next) {
+  const authHeader = req.headers.authorization || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim() || req.headers['x-auth-token'];
+
+  if (!token || !activeTokens.has(token)) {
+    return res.status(401).json({ error: "Unauthorized access. Please log in to perform this action." });
+  }
+  next();
+}
+
+// ─── Auth API Routes ─────────────────────────────────────
+
+// POST Admin Login API
+app.post('/api/login', (req, res) => {
+  const { id, pass } = req.body;
+
+  if (id === ADMIN_USER && pass === ADMIN_PASS) {
+    const token = crypto.randomBytes(32).toString('hex');
+    activeTokens.set(token, Date.now());
+    return res.json({ success: true, token, message: "Authenticated successfully" });
+  }
+
+  res.status(401).json({ error: "Invalid Admin ID or Password" });
+});
+
+// POST Admin Logout API
+app.post('/api/logout', (req, res) => {
+  const authHeader = req.headers.authorization || '';
+  const token = authHeader.replace(/^Bearer\s+/i, '').trim() || req.headers['x-auth-token'];
+  if (token) {
+    activeTokens.delete(token);
+  }
+  res.json({ success: true, message: "Logged out successfully" });
+});
+
+// ─── Public API Routes ───────────────────────────────────
+
+// 1. GET Config API (Public, SMTP password masked)
 app.get('/api/config', (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
   const config = loadConfig();
-  // Don't expose SMTP password for security
   const safeConfig = JSON.parse(JSON.stringify(config));
   if (safeConfig.smtp) {
     safeConfig.smtp.pass = safeConfig.smtp.pass ? "********" : "";
@@ -49,29 +130,7 @@ app.get('/api/config', (req, res) => {
   res.json(safeConfig);
 });
 
-// 2. POST Config API
-app.post('/api/config', (req, res) => {
-  const newConfig = req.body;
-  const currentConfig = loadConfig();
-
-  // Validate request structure
-  if (!newConfig.smtp || !newConfig.socials) {
-    return res.status(400).json({ error: "Invalid configuration structure" });
-  }
-
-  // Preserve password if sent as placeholder mask
-  if (newConfig.smtp.pass === "********") {
-    newConfig.smtp.pass = currentConfig.smtp.pass;
-  }
-
-  if (saveConfig(newConfig)) {
-    res.json({ success: true, message: "Configuration saved successfully" });
-  } else {
-    res.status(500).json({ error: "Failed to save configuration" });
-  }
-});
-
-// 3. POST Send Email API
+// 2. POST Send Email API (Public)
 app.post('/api/send-email', async (req, res) => {
   const { name, email, subject, message } = req.body;
 
@@ -89,7 +148,6 @@ app.post('/api/send-email', async (req, res) => {
   }
 
   try {
-    // Create Nodemailer Transporter
     const transporter = nodemailer.createTransport({
       host,
       port: parseInt(port, 10),
@@ -97,7 +155,6 @@ app.post('/api/send-email', async (req, res) => {
       auth: { user, pass }
     });
 
-    // Email content
     const mailOptions = {
       from: `"${name}" <${user}>`,
       to: receiver,
@@ -123,13 +180,144 @@ app.post('/api/send-email', async (req, res) => {
   }
 });
 
-// Serve static files from root and dist directories
-app.use(express.static(__dirname));
+// ─── Protected Admin API Routes (requireAuth) ────────────
+
+// POST Config API
+app.post('/api/config', requireAuth, (req, res) => {
+  const newConfig = req.body;
+  const currentConfig = loadConfig();
+
+  if (!newConfig.smtp || !newConfig.socials) {
+    return res.status(400).json({ error: "Invalid configuration structure" });
+  }
+
+  // Preserve password if sent as placeholder mask
+  if (newConfig.smtp.pass === "********") {
+    newConfig.smtp.pass = currentConfig.smtp.pass;
+  }
+
+  if (saveConfig(newConfig)) {
+    res.json({ success: true, message: "Configuration saved successfully" });
+  } else {
+    res.status(500).json({ error: "Failed to save configuration" });
+  }
+});
+
+// DELETE Project API
+app.delete('/api/projects/:index', requireAuth, (req, res) => {
+  const index = parseInt(req.params.index, 10);
+  const config = loadConfig();
+
+  if (isNaN(index) || index < 0 || index >= (config.projects || []).length) {
+    return res.status(400).json({ error: "Invalid project index" });
+  }
+
+  config.projects.splice(index, 1);
+  if (saveConfig(config)) {
+    res.json({ success: true, message: "Project deleted successfully", projects: config.projects });
+  } else {
+    res.status(500).json({ error: "Failed to delete project" });
+  }
+});
+
+// POST Add Project API
+app.post('/api/projects', requireAuth, (req, res) => {
+  const newProject = req.body;
+  if (!newProject || !newProject.title) {
+    return res.status(400).json({ error: "Project title is required" });
+  }
+
+  const config = loadConfig();
+  if (!config.projects) config.projects = [];
+  config.projects.push(newProject);
+
+  if (saveConfig(config)) {
+    res.json({ success: true, message: "Project added successfully", projects: config.projects });
+  } else {
+    res.status(500).json({ error: "Failed to add project" });
+  }
+});
+
+// POST Upload Image API
+app.post('/api/upload', requireAuth, (req, res) => {
+  const { filename, base64Data } = req.body;
+  if (!filename || !base64Data) {
+    return res.status(400).json({ error: "Missing file data" });
+  }
+  try {
+    const uploadsDir = path.join(__dirname, 'uploads');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+    const base64Image = base64Data.replace(/^data:image\/\w+;base64,/, "");
+    const buffer = Buffer.from(base64Image, 'base64');
+    const ext = path.extname(filename) || '.png';
+    const uniqueName = `project_${Date.now()}${ext}`;
+    const filePath = path.join(uploadsDir, uniqueName);
+    
+    fs.writeFileSync(filePath, buffer);
+    res.json({ success: true, imageUrl: `/uploads/${uniqueName}` });
+  } catch (err) {
+    console.error("Upload error:", err);
+    res.status(500).json({ error: "Failed to upload image" });
+  }
+});
+
+// POST Upload Resume API
+app.post('/api/upload-resume', requireAuth, (req, res) => {
+  const { base64Data } = req.body;
+  if (!base64Data) {
+    return res.status(400).json({ error: "Missing file data" });
+  }
+  try {
+    const base64Pdf = base64Data.replace(/^data:[^;]+;base64,/, "");
+    const buffer = Buffer.from(base64Pdf, 'base64');
+    const filePath = path.join(__dirname, 'resume.pdf');
+    
+    fs.writeFileSync(filePath, buffer);
+    res.json({ success: true, message: "Resume uploaded successfully!" });
+  } catch (err) {
+    console.error("Resume upload error:", err);
+    res.status(500).json({ error: "Failed to save resume.pdf" });
+  }
+});
+
+// ─── Static File Serving ─────────────────────────────────
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.static(path.join(__dirname, 'dist')));
+
+// Explicitly serve public frontend root assets
+const allowedPublicFiles = [
+  'index.html',
+  'admin.html',
+  'admin.js',
+  'app.js',
+  'style.css',
+  'tux-artwork.jpg',
+  'tux-artwork.png',
+  'tux-logo.png',
+  'resume.pdf'
+];
+
+allowedPublicFiles.forEach(file => {
+  app.get(`/${file}`, (req, res) => {
+    const filePath = path.join(__dirname, file);
+    if (fs.existsSync(filePath)) {
+      res.sendFile(filePath);
+    } else {
+      res.status(404).send('Not found');
+    }
+  });
+});
 
 // Serve admin page directly if requested
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Wildcard fallback for clean SPA routing
+app.get('/*splat', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 app.listen(PORT, () => {

@@ -1,17 +1,29 @@
 const API_URL = '/api';
 
-// ─── Credentials ───────────────────────────────────────
-const ADMIN_ID   = "Admintux09";
-const ADMIN_PASS = "tux@#1234";
+let projectsList = [];
+let authToken = sessionStorage.getItem('tux_admin_token') || '';
 
 // ─── Init ──────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-  // Always show auth on every page load for security
-  showAuth();
+  if (authToken) {
+    showDashboard();
+  } else {
+    showAuth();
+  }
 });
 
+function getAuthHeaders(extraHeaders = {}) {
+  const headers = {
+    ...extraHeaders
+  };
+  if (authToken) {
+    headers['Authorization'] = `Bearer ${authToken}`;
+  }
+  return headers;
+}
+
 function showAuth() {
-  document.getElementById("authPanel").style.display     = "block";
+  document.getElementById("authPanel").style.display = "block";
   document.getElementById("dashboardPanel").classList.remove("show");
 }
 
@@ -22,24 +34,52 @@ function showDashboard() {
 }
 
 // ─── Auth ──────────────────────────────────────────────
-function handleAuth(event) {
+async function handleAuth(event) {
   event.preventDefault();
   const id   = document.getElementById("adminId").value.trim();
   const pass = document.getElementById("adminPassword").value;
   const err  = document.getElementById("authError");
 
-  if (id === ADMIN_ID && pass === ADMIN_PASS) {
-    err.style.display = "none";
-    showDashboard();
-    showToast("Authenticated successfully", "shield-check", false);
-  } else {
+  try {
+    const res = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, pass })
+    });
+
+    const data = await res.json();
+    if (res.ok && data.success && data.token) {
+      err.style.display = "none";
+      authToken = data.token;
+      sessionStorage.setItem('tux_admin_token', authToken);
+      showDashboard();
+      showToast("Authenticated successfully", "shield-check", false);
+    } else {
+      err.textContent = data.error || "Authentication failed";
+      err.style.display = "block";
+      document.getElementById("adminPassword").value = "";
+      document.getElementById("adminId").focus();
+    }
+  } catch (e) {
+    err.textContent = "Unable to connect to authentication server";
     err.style.display = "block";
-    document.getElementById("adminPassword").value = "";
-    document.getElementById("adminId").focus();
   }
 }
 
-function logout() {
+async function logout() {
+  if (authToken) {
+    try {
+      await fetch(`${API_URL}/logout`, {
+        method: "POST",
+        headers: getAuthHeaders({ "Content-Type": "application/json" })
+      });
+    } catch (e) {
+      // Ignore logout connection errors
+    }
+  }
+
+  authToken = '';
+  sessionStorage.removeItem('tux_admin_token');
   showAuth();
   document.getElementById("authForm").reset();
   document.getElementById("authError").style.display = "none";
@@ -49,7 +89,7 @@ function logout() {
 // ─── Load Config ───────────────────────────────────────
 async function loadConfig() {
   try {
-    const res = await fetch(`${API_URL}/config`);
+    const res = await fetch(`${API_URL}/config?t=${Date.now()}`);
     if (!res.ok) throw new Error("Failed to load config");
     const cfg = await res.json();
 
@@ -66,15 +106,185 @@ async function loadConfig() {
     document.getElementById("socialLinkedin").value = cfg.socials.linkedin  || "";
     document.getElementById("socialInstagram").value= cfg.socials.instagram || "";
     document.getElementById("socialEmail").value    = cfg.socials.email     || "";
+
+    // Profile
+    const prof = cfg.profile || {};
+    document.getElementById("profName").value      = prof.name      || "";
+    document.getElementById("profTitle").value     = prof.title     || "";
+    document.getElementById("profEmail").value     = prof.email     || "";
+    document.getElementById("profLocation").value  = prof.location  || "";
+    document.getElementById("profLanguages").value = prof.languages || "";
+    document.getElementById("profCollege").value   = prof.college   || "";
+    document.getElementById("profIde").value       = prof.ide       || "";
+
+    // Projects
+    projectsList = cfg.projects || [];
+    renderProjectsAdmin();
   } catch (err) {
     showToast("Could not load config from server", "x-circle", true);
     console.error(err);
   }
 }
 
+// ─── Project Actions ───────────────────────────────────
+function renderProjectsAdmin() {
+  const container = document.getElementById("projectsListContainer");
+  if (!container) return;
+
+  if (projectsList.length === 0) {
+    container.innerHTML = `<div style="font-size:12px; color:var(--text-dim); text-align:center; padding: 20px 0;">No projects added yet.</div>`;
+    return;
+  }
+
+  container.innerHTML = projectsList.map((p, idx) => `
+    <div class="project-item">
+      <div>
+        <div class="project-item-title">${p.title}</div>
+        <div class="project-item-category">${p.category}</div>
+      </div>
+      <button type="button" class="btn-delete-proj" onclick="deleteProjectFromList(${idx})">
+        <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+      </button>
+    </div>
+  `).join('');
+
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
+}
+
+async function deleteProjectFromList(idx) {
+  showToast("Deleting project...", "info", false);
+
+  try {
+    const res = await fetch(`${API_URL}/projects/${idx}`, {
+      method: "DELETE",
+      headers: getAuthHeaders()
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      projectsList = data.projects || [];
+      renderProjectsAdmin();
+      showToast("Project deleted successfully!", "check-circle", false);
+    } else {
+      if (res.status === 401) {
+        logout();
+      }
+      throw new Error(data.error || "Delete failed");
+    }
+  } catch (err) {
+    showToast(`Delete failed: ${err.message}`, "x-circle", true);
+    console.error("Delete project error:", err);
+  }
+}
+
+async function addNewProjectToList() {
+  const titleVal = document.getElementById("newProjTitle").value.trim();
+  const catVal = document.getElementById("newProjCategory").value.trim();
+  const descVal = document.getElementById("newProjDesc").value.trim();
+  const techVal = document.getElementById("newProjTech").value.trim();
+  const codeVal = document.getElementById("newProjCodeUrl").value.trim();
+  const launchVal = document.getElementById("newProjLaunchUrl").value.trim();
+  const fileInput = document.getElementById("newProjImageFile");
+
+  if (!titleVal) {
+    showToast("Project Title is required", "alert-circle", true);
+    return;
+  }
+
+  let imageUrl = "";
+
+  if (fileInput.files && fileInput.files[0]) {
+    const file = fileInput.files[0];
+    showToast("Uploading image...", "info", false);
+    try {
+      const base64Data = await fileToBase64(file);
+      const uploadRes = await fetch('/api/upload', {
+        method: 'POST',
+        headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ filename: file.name, base64Data })
+      });
+      const uploadData = await uploadRes.json();
+      if (uploadRes.ok && uploadData.success) {
+        imageUrl = uploadData.imageUrl;
+      } else {
+        if (uploadRes.status === 401) logout();
+        throw new Error(uploadData.error || "Upload failed");
+      }
+    } catch (err) {
+      showToast(`Image upload failed: ${err.message}`, "x-circle", true);
+      return;
+    }
+  }
+
+  const newProj = {
+    title: titleVal,
+    category: catVal || "WEB DEVELOPMENT",
+    description: descVal,
+    tech: techVal ? techVal.split(",").map(t => t.trim()).filter(Boolean) : [],
+    codeUrl: codeVal || "#",
+    launchUrl: launchVal || "#",
+    imageUrl: imageUrl
+  };
+
+  showToast("Adding project...", "info", false);
+
+  try {
+    const res = await fetch('/api/projects', {
+      method: 'POST',
+      headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(newProj)
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      projectsList = data.projects || [];
+      renderProjectsAdmin();
+
+      // Reset inputs
+      document.getElementById("newProjTitle").value = "";
+      document.getElementById("newProjCategory").value = "";
+      document.getElementById("newProjDesc").value = "";
+      document.getElementById("newProjTech").value = "";
+      document.getElementById("newProjCodeUrl").value = "";
+      document.getElementById("newProjLaunchUrl").value = "";
+      fileInput.value = "";
+      const uploadTextEl = document.getElementById("file-upload-text");
+      if (uploadTextEl) uploadTextEl.textContent = "Choose file or drag & drop";
+
+      showToast("Project added successfully!", "check-circle", false);
+    } else {
+      if (res.status === 401) logout();
+      throw new Error(data.error || "Add failed");
+    }
+  } catch (err) {
+    showToast(`Failed to add project: ${err.message}`, "x-circle", true);
+    console.error("Add project error:", err);
+  }
+}
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
+}
+
+function updateFileNameDisplay(input) {
+  const textEl = document.getElementById("file-upload-text");
+  if (textEl && input.files && input.files[0]) {
+    textEl.textContent = `Selected: ${input.files[0].name}`;
+  } else if (textEl) {
+    textEl.textContent = "Choose file or drag & drop";
+  }
+}
+
 // ─── Save Config ───────────────────────────────────────
 async function saveConfiguration(event) {
-  event.preventDefault();
+  if (event && typeof event.preventDefault === "function") {
+    event.preventDefault();
+  }
 
   const config = {
     smtp: {
@@ -90,26 +300,44 @@ async function saveConfiguration(event) {
       linkedin:  document.getElementById("socialLinkedin").value,
       instagram: document.getElementById("socialInstagram").value,
       email:     document.getElementById("socialEmail").value
-    }
+    },
+    profile: {
+      name:      document.getElementById("profName").value,
+      title:     document.getElementById("profTitle").value,
+      email:     document.getElementById("profEmail").value,
+      location:  document.getElementById("profLocation").value,
+      languages: document.getElementById("profLanguages").value,
+      college:   document.getElementById("profCollege").value,
+      ide:       document.getElementById("profIde").value
+    },
+    projects: projectsList
   };
 
   try {
     const res = await fetch(`${API_URL}/config`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: getAuthHeaders({ "Content-Type": "application/json" }),
       body: JSON.stringify(config)
     });
 
-    const data = await res.json();
-    if (res.ok && data.success) {
+    let data;
+    const contentType = res.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      data = await res.json();
+    }
+
+    if (res.ok && data && data.success) {
       showToast("Configuration saved!", "check-circle", false);
       loadConfig(); // reload to apply password masking
     } else {
-      throw new Error(data.error || "Save failed");
+      if (res.status === 401) logout();
+      const errMsg = data ? (data.error || "Save failed") : `Server error (Status ${res.status})`;
+      throw new Error(errMsg);
     }
   } catch (err) {
     showToast(`Error: ${err.message}`, "x-circle", true);
     console.error(err);
+    throw err;
   }
 }
 
@@ -127,3 +355,56 @@ function showToast(message, icon, isError) {
   toast.classList.add("show");
   setTimeout(() => toast.classList.remove("show"), 3200);
 }
+
+function updateResumeNameDisplay(input) {
+  const textEl = document.getElementById("resume-upload-text");
+  if (textEl && input.files && input.files[0]) {
+    textEl.textContent = `Selected: ${input.files[0].name}`;
+  } else if (textEl) {
+    textEl.textContent = "Choose PDF Resume";
+  }
+}
+
+async function uploadResumeToServer() {
+  const fileInput = document.getElementById("resumeFile");
+  if (!fileInput.files || !fileInput.files[0]) {
+    showToast("Please select a PDF file first", "alert-circle", true);
+    return;
+  }
+
+  const file = fileInput.files[0];
+  showToast("Uploading resume...", "info", false);
+
+  try {
+    const base64Data = await fileToBase64(file);
+    const res = await fetch('/api/upload-resume', {
+      method: 'POST',
+      headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ base64Data })
+    });
+
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast("Resume uploaded successfully!", "check-circle", false);
+      fileInput.value = "";
+      const textEl = document.getElementById("resume-upload-text");
+      if (textEl) textEl.textContent = "Choose PDF Resume";
+    } else {
+      if (res.status === 401) logout();
+      throw new Error(data.error || "Upload failed");
+    }
+  } catch (err) {
+    showToast(`Upload failed: ${err.message}`, "x-circle", true);
+    console.error(err);
+  }
+}
+
+// Expose functions globally to window object
+window.deleteProjectFromList = deleteProjectFromList;
+window.addNewProjectToList = addNewProjectToList;
+window.saveConfiguration = saveConfiguration;
+window.handleAuth = handleAuth;
+window.logout = logout;
+window.updateFileNameDisplay = updateFileNameDisplay;
+window.uploadResumeToServer = uploadResumeToServer;
+window.updateResumeNameDisplay = updateResumeNameDisplay;
