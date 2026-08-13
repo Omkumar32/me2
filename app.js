@@ -2,6 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }
+});
+window.addEventListener("load", () => {
+  if (typeof lucide !== "undefined") {
+    lucide.createIcons();
+  }
+});
+document.addEventListener("DOMContentLoaded", () => {
   const state = {
     mouse: { x: 0, y: 0, targetX: 0, targetY: 0 },
     windowSize: { width: window.innerWidth, height: window.innerHeight },

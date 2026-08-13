@@ -46,22 +46,32 @@ app.use((req, res, next) => {
   next();
 });
 function loadConfig() {
-  try {
-    if (fs.existsSync(CONFIG_PATH)) {
-      const rawData = fs.readFileSync(CONFIG_PATH, "utf8");
-      return JSON.parse(rawData);
+  const possiblePaths = [
+    path.join(__dirname, "config.json"),
+    path.join(process.cwd(), "config.json"),
+    path.join(__dirname, "..", "config.json"),
+  ];
+  for (const p of possiblePaths) {
+    try {
+      if (fs.existsSync(p)) {
+        const rawData = fs.readFileSync(p, "utf8");
+        const parsed = JSON.parse(rawData);
+        if (parsed && parsed.projects && parsed.projects.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (err) {
+      console.error("Error reading config path:", p, err);
     }
-  } catch (err) {
-    console.error("Error loading config:", err);
   }
   return {
     smtp: {
-      host: "smtp.gmail.com",
-      port: 587,
+      host: process.env.SMTP_HOST || "smtp.gmail.com",
+      port: process.env.SMTP_PORT || 587,
       secure: false,
-      user: "",
-      pass: "",
-      receiver: "omkumar4138@gmail.com",
+      user: process.env.SMTP_USER || "omkumar4138@gmail.com",
+      pass: process.env.SMTP_PASS || "",
+      receiver: process.env.SMTP_RECEIVER || "omkumar4138@gmail.com",
     },
     socials: {
       github: "https://github.com/Omkumar32",
@@ -78,7 +88,35 @@ function loadConfig() {
       college: "K.D. Rungta, Raipur",
       ide: "VS Code",
     },
-    projects: [],
+    projects: [
+      {
+        title: "Cricket Tournament Manager",
+        category: "NEXT.JS // MONGODB",
+        description:
+          "A full-featured cricket tournament management platform with team registrations, live score updates, and bracket management.",
+        tech: ["Next.js", "MongoDB", "Node.js", "Express"],
+        codeUrl: "https://github.com/Omkumar32",
+        launchUrl: "#",
+      },
+      {
+        title: "School ERP System",
+        category: "REACT // NODE.JS",
+        description:
+          "Comprehensive school management system handling student records, attendance, fee management, and teacher-student communication.",
+        tech: ["React", "Node.js", "MongoDB", "Express"],
+        codeUrl: "https://github.com/Omkumar32",
+        launchUrl: "#",
+      },
+      {
+        title: "PDF Tools Suite",
+        category: "NEXT.JS // EXPRESS",
+        description:
+          "A web-based PDF utility toolkit supporting merging, splitting, compression, and format conversion with a clean drag-and-drop UI.",
+        tech: ["Next.js", "Express", "Node.js", "MongoDB"],
+        codeUrl: "https://github.com/Omkumar32",
+        launchUrl: "#",
+      },
+    ],
   };
 }
 function saveConfig(config) {
