@@ -877,8 +877,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   window.addEventListener("popstate", handleRouting);
   setTimeout(handleRouting, 600);
-  const floatContainer = document.getElementById("floatingTechContainer");
-  if (floatContainer) {
+  function initFloatingTech() {
+    const floatContainer = document.getElementById("floatingTechContainer");
+    if (!floatContainer || floatContainer.children.length > 0) return;
+
     const techBubblesData = [
       {
         name: "JavaScript",
@@ -924,7 +926,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const bubbles = [];
     const bubbleSize = 60;
     const bubbleRadius = bubbleSize / 2;
-    techBubblesData.forEach((data, index) => {
+
+    const containerW = floatContainer.offsetWidth || window.innerWidth || 1200;
+    const containerH = floatContainer.offsetHeight || window.innerHeight || 800;
+
+    techBubblesData.forEach((data) => {
       const bubbleEl = document.createElement("div");
       bubbleEl.className = `floating-tech-bubble ${data.class}`;
       bubbleEl.innerHTML = `
@@ -932,12 +938,12 @@ document.addEventListener("DOMContentLoaded", () => {
         <span class="floating-tech-tooltip">${data.name}</span>
       `;
       floatContainer.appendChild(bubbleEl);
-      const containerW = floatContainer.offsetWidth || window.innerWidth;
-      const containerH = floatContainer.offsetHeight || window.innerHeight;
+
       const x = Math.random() * (containerW - bubbleSize) + bubbleRadius;
       const y = Math.random() * (containerH - bubbleSize) + bubbleRadius;
       const vx = (Math.random() - 0.5) * 0.8;
       const vy = (Math.random() - 0.5) * 0.8;
+
       bubbles.push({
         el: bubbleEl,
         x,
@@ -954,6 +960,7 @@ document.addEventListener("DOMContentLoaded", () => {
         dragVy: 0,
       });
     });
+
     let mouseX = -1000;
     let mouseY = -1000;
     window.addEventListener("mousemove", (e) => {
@@ -961,10 +968,7 @@ document.addEventListener("DOMContentLoaded", () => {
       mouseX = e.clientX - rect.left;
       mouseY = e.clientY - rect.top;
     });
-    window.addEventListener("mouseleave", () => {
-      mouseX = -1000;
-      mouseY = -1000;
-    });
+
     bubbles.forEach((b) => {
       const startDrag = (clientX, clientY) => {
         b.isDragging = true;
@@ -978,26 +982,29 @@ document.addEventListener("DOMContentLoaded", () => {
         b.lastX = b.x;
         b.lastY = b.y;
       };
+
       const moveDrag = (clientX, clientY) => {
         if (!b.isDragging) return;
         const rect = floatContainer.getBoundingClientRect();
-        const containerW = floatContainer.offsetWidth;
-        const containerH = floatContainer.offsetHeight;
+        const cW = floatContainer.offsetWidth || window.innerWidth;
+        const cH = floatContainer.offsetHeight || window.innerHeight;
         let targetX = clientX - rect.left - b.dragStartX;
         let targetY = clientY - rect.top - b.dragStartY;
-        targetX = Math.max(b.radius, Math.min(containerW - b.radius, targetX));
-        targetY = Math.max(b.radius, Math.min(containerH - b.radius, targetY));
+        targetX = Math.max(b.radius, Math.min(cW - b.radius, targetX));
+        targetY = Math.max(b.radius, Math.min(cH - b.radius, targetY));
         b.dragVx = targetX - b.x;
         b.dragVy = targetY - b.y;
         b.x = targetX;
         b.y = targetY;
       };
+
       const endDrag = () => {
         if (!b.isDragging) return;
         b.isDragging = false;
         b.vx = Math.max(-5, Math.min(5, b.dragVx * 0.7));
         b.vy = Math.max(-5, Math.min(5, b.dragVy * 0.7));
       };
+
       b.el.addEventListener("mousedown", (e) => {
         e.preventDefault();
         startDrag(e.clientX, e.clientY);
@@ -1006,6 +1013,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (b.isDragging) moveDrag(e.clientX, e.clientY);
       });
       window.addEventListener("mouseup", endDrag);
+
       b.el.addEventListener("touchstart", (e) => {
         if (e.touches.length > 0) {
           startDrag(e.touches[0].clientX, e.touches[0].clientY);
@@ -1018,14 +1026,17 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       window.addEventListener("touchend", endDrag);
     });
+
     function updatePhysics() {
-      const containerW = floatContainer.offsetWidth || window.innerWidth;
-      const containerH = floatContainer.offsetHeight || window.innerHeight;
+      const cW = floatContainer.offsetWidth || window.innerWidth;
+      const cH = floatContainer.offsetHeight || window.innerHeight;
+
       bubbles.forEach((b) => {
         if (b.isDragging) {
           b.el.style.transform = `translate(${b.x - b.radius}px, ${b.y - b.radius}px)`;
           return;
         }
+
         b.vx *= 0.98;
         b.vy *= 0.98;
         const speed = Math.sqrt(b.vx * b.vx + b.vy * b.vy);
@@ -1034,10 +1045,12 @@ document.addEventListener("DOMContentLoaded", () => {
           b.vx += Math.cos(angle) * 0.08;
           b.vy += Math.sin(angle) * 0.08;
         }
+
         const dx = b.x - mouseX;
         const dy = b.y - mouseY;
         const distance = Math.sqrt(dx * dx + dy * dy);
         const repelRadius = 140;
+
         if (distance < repelRadius) {
           const force = (repelRadius - distance) / repelRadius;
           const pushX = (dx / (distance || 1)) * force * 0.8;
@@ -1045,26 +1058,39 @@ document.addEventListener("DOMContentLoaded", () => {
           b.vx += pushX;
           b.vy += pushY;
         }
+
         b.x += b.vx;
         b.y += b.vy;
+
         if (b.x - b.radius < 0) {
           b.x = b.radius;
           b.vx = -b.vx * 0.8;
-        } else if (b.x + b.radius > containerW) {
-          b.x = containerW - b.radius;
+        } else if (b.x + b.radius > cW) {
+          b.x = cW - b.radius;
           b.vx = -b.vx * 0.8;
         }
+
         if (b.y - b.radius < 0) {
           b.y = b.radius;
           b.vy = -b.vy * 0.8;
-        } else if (b.y + b.radius > containerH) {
-          b.y = containerH - b.radius;
+        } else if (b.y + b.radius > cH) {
+          b.y = cH - b.radius;
           b.vy = -b.vy * 0.8;
         }
+
         b.el.style.transform = `translate(${b.x - b.radius}px, ${b.y - b.radius}px)`;
       });
+
       requestAnimationFrame(updatePhysics);
     }
+
     requestAnimationFrame(updatePhysics);
   }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initFloatingTech);
+  } else {
+    initFloatingTech();
+  }
+  window.addEventListener("load", initFloatingTech);
 });
