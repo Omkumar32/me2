@@ -2189,15 +2189,12 @@ a.m-val:hover {
   letter-spacing: 0.5px;
 }
 
-/* --- GSAP Scroll reveal defaults --- */
-.scroll-reveal {
-  opacity: 0;
-  transform: translateY(40px);
-}
-
+/* --- GSAP Scroll reveal defaults (Visible fallback by default) --- */
+.scroll-reveal,
 .init-fade {
-  opacity: 0;
-  transform: translateY(20px);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 /* --- Media Queries --- */
