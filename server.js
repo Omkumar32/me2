@@ -293,10 +293,13 @@ allowedPublicFiles.forEach((file) => {
     }
   });
 });
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "admin.html"));
 });
-app.get("/*splat", (req, res) => {
+app.get(/.*/, (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 if (require.main === module) {
