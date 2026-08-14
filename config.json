@@ -48,6 +48,39 @@
       ],
       "codeUrl": "https://github.com/Omkumar32",
       "launchUrl": "#"
+    },
+    {
+      "title": "School ERP System",
+      "category": "REACT // NODE.JS //",
+      "description": "",
+      "tech": [
+        "Next.js/  JS // SQL"
+      ],
+      "codeUrl": "#",
+      "launchUrl": "https://firayalalpublicschool.edu.in/",
+      "imageUrl": "/uploads/project_1786717904726.png"
+    },
+    {
+      "title": "News Portal",
+      "category": "REACT // NODE.JS //",
+      "description": "",
+      "tech": [
+        "Next.js/  JS // SQL"
+      ],
+      "codeUrl": "#",
+      "launchUrl": "https://www.globalawaaz.com/",
+      "imageUrl": "/uploads/project_1786718201986.png"
+    },
+    {
+      "title": "MedTrack",
+      "category": "REACT // NODE.JS //",
+      "description": "",
+      "tech": [
+        "Next.js/  JS // MongoDB"
+      ],
+      "codeUrl": "#",
+      "launchUrl": "#",
+      "imageUrl": "/uploads/project_1786719315365.png"
     }
   ]
 }
