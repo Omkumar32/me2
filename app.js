@@ -542,240 +542,169 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     lastScrollY = currentScrollY;
   });
+  function applyConfigToDOM(config) {
+    if (!config || !config.socials) return;
+    const { github, linkedin, instagram, email } = config.socials;
+    const topGH = document.querySelector(".top-connect-header a[aria-label='GitHub']");
+    if (topGH && github) topGH.href = github;
+    const topLI = document.querySelector(".top-connect-header a[aria-label='LinkedIn']");
+    if (topLI && linkedin) topLI.href = linkedin;
+    const topIG = document.querySelector(".top-connect-header a[aria-label='Instagram']");
+    if (topIG && instagram) topIG.href = instagram;
+    const topMail = document.querySelector(".top-connect-header a[aria-label='Email']");
+    if (topMail && email) topMail.href = `mailto:${email}`;
+    const contactMail = document.querySelector(".contact-methods a[href^='mailto:']");
+    if (contactMail && email) {
+      contactMail.href = `mailto:${email}`;
+      contactMail.textContent = email;
+    }
+    const contactLI = document.querySelector(".contact-methods a[href*='linkedin.com']");
+    if (contactLI && linkedin) {
+      contactLI.href = linkedin;
+      try {
+        const username = linkedin.replace(/\/$/, "").split("/").pop();
+        contactLI.textContent = username;
+      } catch (e) {
+        contactLI.textContent = "LinkedIn Profile";
+      }
+    }
+    const footerGH = document.querySelector(".footer-socials a[aria-label='GitHub']");
+    if (footerGH && github) footerGH.href = github;
+    const footerLI = document.querySelector(".footer-socials a[aria-label='LinkedIn']");
+    if (footerLI && linkedin) footerLI.href = linkedin;
+    const footerIG = document.querySelector(".footer-socials a[aria-label='Instagram']");
+    if (footerIG && instagram) footerIG.href = instagram;
+    const footerMail = document.querySelector(".footer-socials a[aria-label='Email']");
+    if (footerMail && email) footerMail.href = `mailto:${email}`;
+    if (config.profile) {
+      const { name, title, email: profEmail, location, languages, college, ide } = config.profile;
+      const profNameEl = document.querySelector(".profile-name");
+      if (profNameEl && name) profNameEl.textContent = name;
+      const profTitleEl = document.querySelector(".profile-title");
+      if (profTitleEl && title) profTitleEl.textContent = title;
+      const detailItems = document.querySelectorAll(".profile-details li");
+      detailItems.forEach((li) => {
+        const lbl = li.querySelector(".lbl");
+        const val = li.querySelector(".val");
+        if (lbl && val) {
+          const labelText = lbl.textContent.trim().toUpperCase();
+          if (labelText === "EMAIL:" && profEmail) val.textContent = profEmail;
+          else if (labelText === "LOC:" && location) val.textContent = location;
+          else if (labelText === "LANGUAGE:" && languages) val.textContent = languages;
+          else if (labelText === "COLLEGE:" && college) val.textContent = college;
+          else if (labelText === "IDE:" && ide) val.textContent = ide;
+        }
+      });
+    }
+    const projects = config.projects || [];
+    const featuredRow = document.querySelector(".featured-projects-row");
+    if (featuredRow && projects.length > 0) {
+      featuredRow.innerHTML = projects
+        .map((p) => {
+          let iconName = "folder-git-2";
+          let iconClass = "generic";
+          const titleLower = p.title.toLowerCase();
+          if (titleLower.includes("cricket")) {
+            iconName = "target";
+            iconClass = "cricket";
+          } else if (titleLower.includes("school") || titleLower.includes("erp")) {
+            iconName = "graduation-cap";
+            iconClass = "school";
+          } else if (titleLower.includes("pdf")) {
+            iconName = "file-text";
+            iconClass = "pdf";
+          } else if (
+            titleLower.includes("medication") ||
+            titleLower.includes("tracker") ||
+            titleLower.includes("health")
+          ) {
+            iconName = "pill";
+            iconClass = "med";
+          }
+          const tagsHtml = (p.tech || [])
+            .slice(0, 2)
+            .map((tag) => `<span>${tag}</span>`)
+            .join("");
+          return `
+          <div class="mini-project-card glass-panel tilt-element">
+            <div class="mini-card-glow"></div>
+            <div class="mini-card-icon ${iconClass}">
+              <i data-lucide="${iconName}"></i>
+            </div>
+            <div class="mini-card-info">
+              <h4 class="mini-card-title">${p.title}</h4>
+              <div class="mini-card-tags">
+                ${tagsHtml}
+              </div>
+            </div>
+          </div>
+        `;
+        })
+        .join("");
+    }
+    const projectsGrid = document.querySelector(".projects-grid");
+    if (projectsGrid && projects.length > 0) {
+      projectsGrid.innerHTML = projects
+        .map((p, idx) => {
+          const category = p.category || "WEB DEVELOPMENT";
+          const techHtml = (p.tech || [])
+            .map((tag) => `<span>${tag}</span>`)
+            .join("");
+          const imageHtml = p.imageUrl
+            ? `<img src="${p.imageUrl}" alt="${p.title}" class="project-image" loading="lazy" decoding="async">`
+            : `
+              <div class="project-visual-sim p-sim-${(idx % 3) + 1}">
+                <div class="grid-overlay"></div>
+                <div class="animated-nodes"></div>
+              </div>
+            `;
+          return `
+          <div class="project-card glass-panel tilt-element scroll-reveal" style="opacity: 1; transform: none;">
+            <div class="project-glow"></div>
+            <div class="project-image-wrap">
+              ${imageHtml}
+              <div class="project-category font-mono">${category}</div>
+            </div>
+            <div class="project-info">
+              <h3 class="project-card-title">${p.title}</h3>
+              <p class="project-card-desc">${p.description || ""}</p>
+              <div class="project-tech font-mono">
+                ${techHtml}
+              </div>
+              <div class="project-actions">
+                <a href="${p.codeUrl || "#"}" target="_blank" rel="noopener" class="btn btn-icon-link" aria-label="Github Repo">
+                  <i data-lucide="github"></i><span>CODE</span>
+                </a>
+                <a href="${p.launchUrl || "#"}" target="_blank" rel="noopener" class="btn btn-project-cta" aria-label="Live Site">
+                  <span>LAUNCH SITE</span><i data-lucide="arrow-up-right"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+        })
+        .join("");
+    }
+    if (typeof lucide !== "undefined") {
+      lucide.createIcons();
+    }
+  }
+
   async function loadConfigSocials() {
     try {
-      const res = await fetch(`/api/config?t=${Date.now()}`);
+      const cached = localStorage.getItem("tux_cached_config");
+      if (cached) {
+        try {
+          applyConfigToDOM(JSON.parse(cached));
+        } catch (e) {}
+      }
+      const res = await fetch("/api/config");
       if (!res.ok) throw new Error("Config load failed");
       const config = await res.json();
-      const { github, linkedin, instagram, email } = config.socials;
-      const topGH = document.querySelector(
-        ".top-connect-header a[aria-label='GitHub']",
-      );
-      if (topGH) topGH.href = github;
-      const topLI = document.querySelector(
-        ".top-connect-header a[aria-label='LinkedIn']",
-      );
-      if (topLI) topLI.href = linkedin;
-      const topIG = document.querySelector(
-        ".top-connect-header a[aria-label='Instagram']",
-      );
-      if (topIG) topIG.href = instagram;
-      const topMail = document.querySelector(
-        ".top-connect-header a[aria-label='Email']",
-      );
-      if (topMail) topMail.href = `mailto:${email}`;
-      const contactMail = document.querySelector(
-        ".contact-methods a[href^='mailto:']",
-      );
-      if (contactMail) {
-        contactMail.href = `mailto:${email}`;
-        contactMail.textContent = email;
-      }
-      const contactLI = document.querySelector(
-        ".contact-methods a[href*='linkedin.com']",
-      );
-      if (contactLI) {
-        contactLI.href = linkedin;
-        try {
-          const username = linkedin.replace(/\/$/, "").split("/").pop();
-          contactLI.textContent = username;
-        } catch (e) {
-          contactLI.textContent = "LinkedIn Profile";
-        }
-      }
-      const footerGH = document.querySelector(
-        ".footer-socials a[aria-label='GitHub']",
-      );
-      if (footerGH) footerGH.href = github;
-      const footerLI = document.querySelector(
-        ".footer-socials a[aria-label='LinkedIn']",
-      );
-      if (footerLI) footerLI.href = linkedin;
-      const footerIG = document.querySelector(
-        ".footer-socials a[aria-label='Instagram']",
-      );
-      if (footerIG) footerIG.href = instagram;
-      const footerMail = document.querySelector(
-        ".footer-socials a[aria-label='Email']",
-      );
-      if (footerMail) footerMail.href = `mailto:${email}`;
-      if (config.profile) {
-        const {
-          name,
-          title,
-          email: profEmail,
-          location,
-          languages,
-          college,
-          ide,
-        } = config.profile;
-        const profNameEl = document.querySelector(".profile-name");
-        if (profNameEl) profNameEl.textContent = name;
-        const profTitleEl = document.querySelector(".profile-title");
-        if (profTitleEl) profTitleEl.textContent = title;
-        const detailItems = document.querySelectorAll(".profile-details li");
-        detailItems.forEach((li) => {
-          const lbl = li.querySelector(".lbl");
-          const val = li.querySelector(".val");
-          if (lbl && val) {
-            const labelText = lbl.textContent.trim().toUpperCase();
-            if (labelText === "EMAIL:") {
-              val.textContent = profEmail;
-            } else if (labelText === "LOC:") {
-              val.textContent = location;
-            } else if (labelText === "LANGUAGE:") {
-              val.textContent = languages;
-            } else if (labelText === "COLLEGE:") {
-              val.textContent = college;
-            } else if (labelText === "IDE:") {
-              val.textContent = ide;
-            }
-          }
-        });
-      }
-      const projects = config.projects || [];
-      const featuredRow = document.querySelector(".featured-projects-row");
-      if (featuredRow && projects.length > 0) {
-        featuredRow.innerHTML = projects
-          .map((p) => {
-            let iconName = "folder-git-2";
-            let iconClass = "generic";
-            const titleLower = p.title.toLowerCase();
-            if (titleLower.includes("cricket")) {
-              iconName = "target";
-              iconClass = "cricket";
-            } else if (
-              titleLower.includes("school") ||
-              titleLower.includes("erp")
-            ) {
-              iconName = "graduation-cap";
-              iconClass = "school";
-            } else if (titleLower.includes("pdf")) {
-              iconName = "file-text";
-              iconClass = "pdf";
-            } else if (
-              titleLower.includes("medication") ||
-              titleLower.includes("tracker") ||
-              titleLower.includes("health")
-            ) {
-              iconName = "pill";
-              iconClass = "med";
-            }
-            const tagsHtml = (p.tech || [])
-              .slice(0, 2)
-              .map((tag) => `<span>${tag}</span>`)
-              .join("");
-            return `
-            <div class="mini-project-card glass-panel tilt-element">
-              <div class="mini-card-glow"></div>
-              <div class="mini-card-icon ${iconClass}">
-                <i data-lucide="${iconName}"></i>
-              </div>
-              <div class="mini-card-info">
-                <h4 class="mini-card-title">${p.title}</h4>
-                <div class="mini-card-tags">
-                  ${tagsHtml}
-                </div>
-              </div>
-            </div>
-          `;
-          })
-          .join("");
-      }
-      const projectsGrid = document.querySelector(".projects-grid");
-      if (projectsGrid && projects.length > 0) {
-        projectsGrid.innerHTML = projects
-          .map((p, idx) => {
-            const category = p.category || "WEB DEVELOPMENT";
-            const techHtml = (p.tech || [])
-              .map((tag) => `<span>${tag}</span>`)
-              .join("");
-            const imageHtml = p.imageUrl
-              ? `<img src="${p.imageUrl}" alt="${p.title}" class="project-image">`
-              : `
-                <div class="project-visual-sim p-sim-${(idx % 3) + 1}">
-                  <div class="grid-overlay"></div>
-                  <div class="animated-nodes"></div>
-                </div>
-              `;
-            return `
-            <div class="project-card glass-panel tilt-element scroll-reveal" style="opacity: 1; transform: none;">
-              <div class="project-glow"></div>
-              <div class="project-image-wrap">
-                ${imageHtml}
-                <div class="project-category font-mono">${category}</div>
-              </div>
-              <div class="project-info">
-                <h3 class="project-card-title">${p.title}</h3>
-                <p class="project-card-desc">${p.description || ""}</p>
-                <div class="project-tech font-mono">
-                  ${techHtml}
-                </div>
-                <div class="project-actions">
-                  <a href="${p.codeUrl || "#"}" target="_blank" rel="noopener" class="btn btn-icon-link" aria-label="Github Repo">
-                    <i data-lucide="github"></i><span>CODE</span>
-                  </a>
-                  <a href="${p.launchUrl || "#"}" target="_blank" rel="noopener" class="btn btn-project-cta" aria-label="Live Site">
-                    <span>LAUNCH SITE</span><i data-lucide="arrow-up-right"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
-          `;
-          })
-          .join("");
-      }
-      if (typeof lucide !== "undefined") {
-        lucide.createIcons();
-      }
-      const newTilts = document.querySelectorAll(".tilt-element");
-      newTilts.forEach((card) => {
-        card.addEventListener("mousemove", (e) => {
-          const rect = card.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          const width = rect.width;
-          const height = rect.height;
-          const rotateX = -10 * ((y - height / 2) / (height / 2));
-          const rotateY = 10 * ((x - width / 2) / (width / 2));
-          card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-          const pctX = (x / width) * 100;
-          const pctY = (y / height) * 100;
-          card.style.setProperty("--mouse-x", `${pctX}%`);
-          card.style.setProperty("--mouse-y", `${pctY}%`);
-        });
-        card.addEventListener("mouseleave", () => {
-          card.style.transform =
-            "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
-        });
-      });
-      const newInteractives = document.querySelectorAll(
-        ".mini-project-card, .project-card, .btn",
-      );
-      const cursorGlowEl = document.getElementById("cursorGlow");
-      newInteractives.forEach((el) => {
-        el.addEventListener("mouseenter", () => {
-          if (cursorGlowEl) {
-            cursorGlowEl.style.width = "800px";
-            cursorGlowEl.style.height = "800px";
-            cursorGlowEl.style.background =
-              "radial-gradient(circle, rgba(200, 255, 61, 0.08) 0%, rgba(45, 27, 105, 0.05) 50%, rgba(0,0,0,0) 70%)";
-          }
-        });
-        el.addEventListener("mouseleave", () => {
-          if (cursorGlowEl) {
-            cursorGlowEl.style.width = "600px";
-            cursorGlowEl.style.height = "600px";
-            cursorGlowEl.style.background =
-              "radial-gradient(circle, rgba(200, 255, 61, 0.05) 0%, rgba(45, 27, 105, 0.03) 50%, rgba(0,0,0,0) 70%)";
-          }
-        });
-      });
+      localStorage.setItem("tux_cached_config", JSON.stringify(config));
+      applyConfigToDOM(config);
     } catch (err) {
-      console.warn(
-        "Could not load dynamic configuration, using static fallback values:",
-        err,
-      );
+      console.warn("Could not load dynamic configuration:", err);
     }
   }
   loadConfigSocials();

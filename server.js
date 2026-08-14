@@ -22,7 +22,32 @@ const PORT = process.env.PORT || 3000;
 const CONFIG_PATH = path.join(__dirname, "config.json");
 const ADMIN_USER = process.env.ADMIN_USER || "Admintux09";
 const ADMIN_PASS = process.env.ADMIN_PASS || "tux@#1234";
-const activeTokens = new Map();
+const AUTH_SECRET = process.env.AUTH_SECRET || ADMIN_PASS || "tux_admin_secret_key_2026";
+
+function generateAuthToken(user) {
+  const payload = Buffer.from(JSON.stringify({ user, ts: Date.now() })).toString("base64url");
+  const sig = crypto.createHmac("sha256", AUTH_SECRET).update(payload).digest("hex");
+  return `${payload}.${sig}`;
+}
+
+function verifyAuthToken(token) {
+  if (!token || typeof token !== "string") return false;
+  const parts = token.split(".");
+  if (parts.length !== 2) return false;
+  const [payload, sig] = parts;
+  const expectedSig = crypto.createHmac("sha256", AUTH_SECRET).update(payload).digest("hex");
+  if (sig !== expectedSig) return false;
+  try {
+    const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
+    if (data && data.user === ADMIN_USER) {
+      return true;
+    }
+  } catch (e) {
+    return false;
+  }
+  return false;
+}
+
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
 app.use((req, res, next) => {
@@ -148,7 +173,7 @@ function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization || "";
   const token =
     authHeader.replace(/^Bearer\s+/i, "").trim() || req.headers["x-auth-token"];
-  if (!token || !activeTokens.has(token)) {
+  if (!token || !verifyAuthToken(token)) {
     return res
       .status(401)
       .json({
@@ -160,8 +185,7 @@ function requireAuth(req, res, next) {
 app.post("/api/login", (req, res) => {
   const { id, pass } = req.body;
   if (id === ADMIN_USER && pass === ADMIN_PASS) {
-    const token = crypto.randomBytes(32).toString("hex");
-    activeTokens.set(token, Date.now());
+    const token = generateAuthToken(id);
     return res.json({
       success: true,
       token,
@@ -171,12 +195,6 @@ app.post("/api/login", (req, res) => {
   res.status(401).json({ error: "Invalid Admin ID or Password" });
 });
 app.post("/api/logout", (req, res) => {
-  const authHeader = req.headers.authorization || "";
-  const token =
-    authHeader.replace(/^Bearer\s+/i, "").trim() || req.headers["x-auth-token"];
-  if (token) {
-    activeTokens.delete(token);
-  }
   res.json({ success: true, message: "Logged out successfully" });
 });
 app.get("/api/config", (req, res) => {

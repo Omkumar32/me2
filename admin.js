@@ -152,6 +152,24 @@ async function deleteProjectFromList(idx) {
     console.error("Delete project error:", err);
   }
 }
+async function optimizeAndUploadImage(file) {
+  if (!file) throw new Error("No file provided");
+  showToast("Optimizing & uploading image...", "info", false);
+  const base64Data = await compressImage(file, 1200, 1200, 0.8);
+  const uploadRes = await fetch("/api/upload", {
+    method: "POST",
+    headers: getAuthHeaders({ "Content-Type": "application/json" }),
+    body: JSON.stringify({ filename: file.name, base64Data }),
+  });
+  const uploadData = await uploadRes.json();
+  if (uploadRes.ok && uploadData.success) {
+    return uploadData.imageUrl;
+  } else {
+    if (uploadRes.status === 401) logout();
+    throw new Error(uploadData.error || "Upload failed");
+  }
+}
+
 async function addNewProjectToList() {
   const titleVal = document.getElementById("newProjTitle").value.trim();
   const catVal = document.getElementById("newProjCategory").value.trim();
@@ -167,21 +185,8 @@ async function addNewProjectToList() {
   let imageUrl = "";
   if (fileInput.files && fileInput.files[0]) {
     const file = fileInput.files[0];
-    showToast("Uploading image...", "info", false);
     try {
-      const base64Data = await fileToBase64(file);
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        headers: getAuthHeaders({ "Content-Type": "application/json" }),
-        body: JSON.stringify({ filename: file.name, base64Data }),
-      });
-      const uploadData = await uploadRes.json();
-      if (uploadRes.ok && uploadData.success) {
-        imageUrl = uploadData.imageUrl;
-      } else {
-        if (uploadRes.status === 401) logout();
-        throw new Error(uploadData.error || "Upload failed");
-      }
+      imageUrl = await optimizeAndUploadImage(file);
     } catch (err) {
       showToast(`Image upload failed: ${err.message}`, "x-circle", true);
       return;
@@ -230,6 +235,41 @@ async function addNewProjectToList() {
     showToast(`Failed to add project: ${err.message}`, "x-circle", true);
     console.error("Add project error:", err);
   }
+}
+function compressImage(file, maxWidth = 1200, maxHeight = 1200, quality = 0.8) {
+  return new Promise((resolve, reject) => {
+    if (file.size <= 300 * 1024) {
+      return fileToBase64(file).then(resolve).catch(reject);
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (e) => {
+      const img = new Image();
+      img.src = e.target.result;
+      img.onload = () => {
+        let width = img.width;
+        let height = img.height;
+        if (width > maxWidth || height > maxHeight) {
+          if (width / height > maxWidth / maxHeight) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          } else {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        const mimeType = file.type === "image/png" ? "image/png" : "image/jpeg";
+        resolve(canvas.toDataURL(mimeType, quality));
+      };
+      img.onerror = (err) => reject(err);
+    };
+    reader.onerror = (err) => reject(err);
+  });
 }
 function fileToBase64(file) {
   return new Promise((resolve, reject) => {
@@ -361,3 +401,5 @@ window.logout = logout;
 window.updateFileNameDisplay = updateFileNameDisplay;
 window.uploadResumeToServer = uploadResumeToServer;
 window.updateResumeNameDisplay = updateResumeNameDisplay;
+window.optimizeAndUploadImage = optimizeAndUploadImage;
+window.compressImage = compressImage;
