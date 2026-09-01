@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="neonGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#c8ff3d" />
+      <stop offset="100%" stop-color="#80e000" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  <!-- Background Badge -->
+  <rect width="64" height="64" rx="16" fill="#070707" stroke="#222" stroke-width="2" />
+  
+  <!-- Outer Cyber Ring -->
+  <circle cx="32" cy="32" r="24" fill="none" stroke="#c8ff3d" stroke-width="1.5" stroke-dasharray="8 4" opacity="0.4" />
+  
+  <!-- Stylized Cyber TUX Lettermark -->
+  <path d="M18 20 H46 V26 H36 V46 H28 V26 H18 Z" fill="url(#neonGlow)" filter="url(#glow)" />
+  
+  <!-- Accent Dot -->
+  <circle cx="44" cy="43" r="3.5" fill="#c8ff3d" filter="url(#glow)" />
+</svg>
