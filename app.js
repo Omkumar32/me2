@@ -434,27 +434,133 @@ document.addEventListener("DOMContentLoaded", () => {
       githubGrid.appendChild(day);
     }
   }
-  const timelineProgress = document.getElementById("timelineProgress");
-  const timelineItems = document.querySelectorAll(".timeline-item");
-  const timelineSection = document.getElementById("experience");
-  window.addEventListener("scroll", () => {
-    if (!timelineProgress || !timelineSection) return;
-    const rect = timelineSection.getBoundingClientRect();
-    const sectionHeight = timelineSection.offsetHeight;
-    const windowHeight = window.innerHeight;
-    const scrollInSec = windowHeight / 2 - rect.top;
-    let pct = (scrollInSec / (sectionHeight - 200)) * 100;
-    pct = Math.max(0, Math.min(100, pct));
-    timelineProgress.style.height = `${pct}%`;
-    timelineItems.forEach((item) => {
-      const itemTop = item.getBoundingClientRect().top;
-      if (itemTop < windowHeight / 2 + 100) {
-        item.classList.add("active");
+  // --- Interactive Curved Hanging Timeline Controller ---
+  const milestoneData = [
+    {
+      year: "2020 — 2022",
+      org: "GURU GOBIND SINGH PUBLIC SCHOOL, KAMRE, RANCHI, JHARKHAND",
+      title: "Higher Secondary Education (12th — Science Stream)",
+      desc: "Completed 12th with Science stream, building a strong foundation in mathematics and logical thinking that now drives my approach to problem-solving in code.",
+      skills: ["Mathematics", "Physics", "Logical Thinking", "Algorithms", "Science Stream"]
+    },
+    {
+      year: "2022 — Present",
+      org: "INDEPENDENT PROJECTS & OPEN SOURCE",
+      title: "Self-Taught Full Stack Developer",
+      desc: "Built multiple real-world projects including a Cricket Tournament Manager, School ERP, PDF Tools, and a Medication Tracker — honing skills in React, Node.js, MongoDB, and Express.",
+      skills: ["React", "Node.js", "MongoDB", "Express", "Full Stack", "Open Source"]
+    },
+    {
+      year: "2023 — 2026",
+      org: "K.D. RUNGTA COLLEGE OF SCIENCE & TECHNOLOGY, RAIPUR, CG",
+      title: "Bachelor of Computer Applications (BCA)",
+      desc: "Pursuing BCA with a focus on Full Stack Web Development, algorithms, and database management. Actively building projects using MERN stack and exploring modern web technologies.",
+      skills: ["Full Stack Web Dev", "Algorithms", "Database Management", "MERN Stack", "Modern Web Tech"]
+    }
+  ];
+
+  const tagWrappers = document.querySelectorAll(".hanging-tag-wrapper");
+  const yearBadge = document.getElementById("milestoneYearBadge");
+  const orgBadge = document.getElementById("milestoneOrgBadge");
+  const milestoneTitle = document.getElementById("milestoneTitle");
+  const milestoneDesc = document.getElementById("milestoneDesc");
+  const milestoneSkills = document.getElementById("milestoneSkills");
+  const milestoneCounter = document.getElementById("milestoneCounter");
+  const prevBtn = document.getElementById("milestonePrevBtn");
+  const nextBtn = document.getElementById("milestoneNextBtn");
+
+  let activeMilestoneIdx = 2; // Default to latest (2023 - 2026 BCA)
+
+  function updateMilestone(idx) {
+    const numericIdx = parseInt(idx, 10);
+    if (isNaN(numericIdx) || !milestoneData[numericIdx]) return;
+    activeMilestoneIdx = numericIdx;
+
+    // Update active tag highlight across all tags
+    document.querySelectorAll(".hanging-tag-wrapper").forEach((tag) => {
+      const tagIdx = parseInt(tag.getAttribute("data-index"), 10);
+      if (tagIdx === numericIdx) {
+        tag.classList.add("active");
       } else {
-        item.classList.remove("active");
+        tag.classList.remove("active");
       }
     });
+
+    const data = milestoneData[numericIdx];
+
+    // Smooth transition
+    const titleEl = document.getElementById("milestoneTitle");
+    const descEl = document.getElementById("milestoneDesc");
+    const yBadgeEl = document.getElementById("milestoneYearBadge");
+    const oBadgeEl = document.getElementById("milestoneOrgBadge");
+    const counterEl = document.getElementById("milestoneCounter");
+    const skillsEl = document.getElementById("milestoneSkills");
+
+    if (titleEl && descEl) {
+      titleEl.style.opacity = "0";
+      descEl.style.opacity = "0";
+      
+      setTimeout(() => {
+        if (yBadgeEl) yBadgeEl.textContent = data.year;
+        if (oBadgeEl) oBadgeEl.textContent = data.org;
+        if (titleEl) titleEl.textContent = data.title;
+        if (descEl) descEl.textContent = data.desc;
+        if (counterEl) {
+          counterEl.textContent = `0${numericIdx + 1} / 0${milestoneData.length}`;
+        }
+
+        if (skillsEl) {
+          skillsEl.innerHTML = data.skills
+            .map((skill) => `<span class="skill-pill">${skill}</span>`)
+            .join("");
+        }
+
+        titleEl.style.opacity = "1";
+        descEl.style.opacity = "1";
+      }, 100);
+    }
+  }
+
+  // Expose globally for instant inline fallback
+  window.selectMilestone = updateMilestone;
+
+  // Bind click & pointer events to tags
+  document.querySelectorAll(".hanging-tag-wrapper").forEach((wrapper) => {
+    const handleTagSelect = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const idx = parseInt(wrapper.getAttribute("data-index"), 10);
+      updateMilestone(idx);
+    };
+
+    wrapper.addEventListener("click", handleTagSelect);
+    wrapper.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "touch") {
+        handleTagSelect(e);
+      }
+    });
+
+    const btn = wrapper.querySelector(".hanging-tag");
+    if (btn) {
+      btn.addEventListener("click", handleTagSelect);
+    }
   });
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const newIdx = (activeMilestoneIdx - 1 + milestoneData.length) % milestoneData.length;
+      updateMilestone(newIdx);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const newIdx = (activeMilestoneIdx + 1) % milestoneData.length;
+      updateMilestone(newIdx);
+    });
+  }
   if (typeof gsap !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
     const tl = gsap.timeline();

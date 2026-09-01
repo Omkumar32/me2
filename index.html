@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Om Kumar — BCA Student & Full Stack Web Developer from Ranchi, Jharkhand. Skilled in JavaScript, Node.js, MongoDB, C, C++. Seeking internship opportunities."
+      content="Om Kumar (TUX) — Full Stack Web Developer & Software Engineer. Skilled in TypeScript, Next.js, React, Node.js, MongoDB, C, and modern scalable web systems."
     />
-    <title>Om Kumar — Full Stack Web Developer</title>
+    <meta name="author" content="Om Kumar (TUX)" />
+    <meta name="keywords" content="TUX, Om Kumar, Om Kumar TUX, Full Stack Developer, Software Engineer, Next.js, React, TypeScript, Node.js, Web Development, Portfolio" />
+    <meta name="robots" content="index, follow" />
+    <title>Om Kumar (TUX) — Full Stack Web Developer</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1331,6 +1334,28 @@
               <div class="skill-item glass-panel">
                 <div class="skill-meta">
                   <span class="skill-name"
+                    ><i data-lucide="file-code-2"></i>TypeScript</span
+                  >
+                  <span class="skill-pct">82%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" style="width: 82%"></div>
+                </div>
+              </div>
+              <div class="skill-item glass-panel">
+                <div class="skill-meta">
+                  <span class="skill-name"
+                    ><i data-lucide="layers"></i>Next.js / React</span
+                  >
+                  <span class="skill-pct">88%</span>
+                </div>
+                <div class="skill-bar-bg">
+                  <div class="skill-bar-fill" style="width: 88%"></div>
+                </div>
+              </div>
+              <div class="skill-item glass-panel">
+                <div class="skill-meta">
+                  <span class="skill-name"
                     ><i data-lucide="palette"></i>HTML5 / CSS3</span
                   >
                   <span class="skill-pct">90%</span>
@@ -1504,73 +1529,108 @@
         </div>
       </section>
 
-      <section class="section timeline-section" id="experience">
-        <div class="container">
-          <div class="section-header scroll-reveal">
-            <span class="section-tag font-mono">05 // CHRONOLOGY</span>
-            <h2 class="section-title">Timeline & History</h2>
-            <div class="section-line"></div>
+      <section class="section timeline-section full-width-timeline" id="experience">
+        <div class="timeline-fullwidth-wrapper">
+          <div class="container section-header-container">
+            <div class="section-header scroll-reveal">
+              <span class="section-tag font-mono">05 // CHRONOLOGY</span>
+              <h2 class="section-title">Timeline & History</h2>
+              <div class="section-line"></div>
+            </div>
           </div>
 
-          <div class="timeline-wrap">
-            <div class="timeline-center-line">
-              <div class="timeline-progress-line" id="timelineProgress"></div>
+          <div class="curved-timeline-container scroll-reveal">
+            <!-- Background Ambient Glow & Cyber Grid -->
+            <div class="timeline-grid-bg"></div>
+            <div class="timeline-glow timeline-glow-orange"></div>
+
+            <!-- Integrated Background Portrait Visual -->
+            <div class="timeline-backdrop-portrait">
+              <img src="om-portrait.jpg" alt="Om Kumar Portrait" class="backdrop-portrait-img" onerror="this.src='tux-artwork.jpg'" />
+              <div class="backdrop-portrait-vignette"></div>
             </div>
 
-            <div class="timeline-item scroll-reveal left">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card glass-panel">
-                <div class="timeline-date font-mono">2023 — 2026</div>
-                <h3 class="timeline-title">
-                  Bachelor of Computer Applications (BCA)
-                </h3>
-                <span class="timeline-company font-mono"
-                  >K.D. Rungta College of Science &amp; Technology, Raipur,
-                  CG</span
-                >
-                <p class="timeline-text">
-                  Pursuing BCA with a focus on Full Stack Web Development,
-                  algorithms, and database management. Actively building
-                  projects using MERN stack and exploring modern web
-                  technologies.
-                </p>
-              </div>
-            </div>
+            <div class="container timeline-content-container">
+              <!-- Active Milestone Interactive Detail Card (Positioned at Top-Left) -->
+              <div class="timeline-active-milestone-panel" id="timelineMilestoneCard">
+                <div class="milestone-card-header">
+                  <div class="milestone-card-meta">
+                    <span class="milestone-year-badge font-mono" id="milestoneYearBadge">2023 — 2026</span>
+                    <span class="milestone-tag font-mono" id="milestoneOrgBadge">K.D. RUNGTA COLLEGE OF SCIENCE & TECHNOLOGY, RAIPUR, CG</span>
+                  </div>
+                  <div class="milestone-controls">
+                    <button class="milestone-nav-btn prev" id="milestonePrevBtn" aria-label="Previous milestone">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+                    </button>
+                    <span class="milestone-counter font-mono" id="milestoneCounter">03 / 03</span>
+                    <button class="milestone-nav-btn next" id="milestoneNextBtn" aria-label="Next milestone">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+                    </button>
+                  </div>
+                </div>
 
-            <div class="timeline-item scroll-reveal right">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card glass-panel">
-                <div class="timeline-date font-mono">2020 — 2022</div>
-                <h3 class="timeline-title">
-                  Higher Secondary Education (12th — Science Stream)
-                </h3>
-                <span class="timeline-company font-mono"
-                  >Guru Gobind Singh Public School, Kamre, Ranchi,
-                  Jharkhand</span
-                >
-                <p class="timeline-text">
-                  Completed 12th with Science stream, building a strong
-                  foundation in mathematics and logical thinking that now drives
-                  my approach to problem-solving in code.
-                </p>
+                <div class="milestone-card-body">
+                  <h4 class="milestone-title" id="milestoneTitle">Bachelor of Computer Applications (BCA)</h4>
+                  <p class="milestone-desc" id="milestoneDesc">
+                    Pursuing BCA with a focus on Full Stack Web Development, algorithms, and database management. Actively building projects using MERN stack and exploring modern web technologies.
+                  </p>
+                  <div class="milestone-skills" id="milestoneSkills">
+                    <span class="skill-pill">Full Stack Web Dev</span>
+                    <span class="skill-pill">Algorithms</span>
+                    <span class="skill-pill">Database Management</span>
+                    <span class="skill-pill">MERN Stack</span>
+                    <span class="skill-pill">Modern Web Tech</span>
+                  </div>
+                </div>
               </div>
-            </div>
+              <div class="timeline-curve-stage">
+                <svg class="timeline-curve-svg" viewBox="0 0 1000 200" preserveAspectRatio="none" fill="none">
+                  <!-- Drop shadow path -->
+                  <path class="timeline-path-glow" d="M 0,90 C 120,105 220,135 340,162 C 460,188 560,165 670,115 C 770,70 870,40 1000,50" />
+                  <!-- Primary dashed curve path -->
+                  <path id="curvedTimelineTrack" class="timeline-path-dashed" d="M 0,90 C 120,105 220,135 340,162 C 460,188 560,165 670,115 C 770,70 870,40 1000,50" />
+                </svg>
 
-            <div class="timeline-item scroll-reveal left">
-              <div class="timeline-dot"></div>
-              <div class="timeline-card glass-panel">
-                <div class="timeline-date font-mono">2022 — Present</div>
-                <h3 class="timeline-title">Self-Taught Full Stack Developer</h3>
-                <span class="timeline-company font-mono"
-                  >Independent Projects &amp; Open Source</span
-                >
-                <p class="timeline-text">
-                  Built multiple real-world projects including a Cricket
-                  Tournament Manager, School ERP, PDF Tools, and a Medication
-                  Tracker — honing skills in React, Node.js, MongoDB, and
-                  Express.
-                </p>
+                <!-- Hanging Tags Container (Tied directly to the curve) -->
+                <div class="hanging-tags-track" id="hangingTagsTrack">
+                  <!-- Tag 1: 2020-2022 (at x: 12%, y: 105px) -->
+                  <div class="hanging-tag-wrapper" data-index="0" onclick="window.selectMilestone && window.selectMilestone(0)" style="--tag-pos-x: 12%; --tag-pos-y: 105px; --tag-tilt: -10deg;">
+                    <div class="tag-string">
+                      <div class="string-ring"></div>
+                      <div class="string-line"></div>
+                    </div>
+                    <button class="hanging-tag" aria-label="Milestone 2020 - 2022" onclick="window.selectMilestone && window.selectMilestone(0)">
+                      <span class="tag-notch"></span>
+                      <span class="tag-year">2020</span>
+                    </button>
+                  </div>
+
+                  <!-- Tag 2: 2022-Present (Opposite / Top Side of Curve, at x: 45%, y: 166px) -->
+                  <div class="hanging-tag-wrapper tag-standing" data-index="1" onclick="window.selectMilestone && window.selectMilestone(1)" style="--tag-pos-x: 45%; --tag-pos-y: 166px; --tag-tilt: -4deg;">
+                    <div class="tag-string">
+                      <div class="string-ring"></div>
+                      <div class="string-line"></div>
+                    </div>
+                    <button class="hanging-tag" aria-label="Milestone 2022 - Present" onclick="window.selectMilestone && window.selectMilestone(1)">
+                      <span class="tag-notch"></span>
+                      <span class="tag-year">2022</span>
+                    </button>
+                  </div>
+
+                  <!-- Tag 3: 2023-2026 (at x: 88%, y: 55px) -->
+                  <div class="hanging-tag-wrapper active" data-index="2" onclick="window.selectMilestone && window.selectMilestone(2)" style="--tag-pos-x: 88%; --tag-pos-y: 55px; --tag-tilt: 0deg;">
+                    <div class="tag-string">
+                      <div class="string-ring"></div>
+                      <div class="string-line"></div>
+                    </div>
+                    <button class="hanging-tag" aria-label="Milestone 2023 - 2026" onclick="window.selectMilestone && window.selectMilestone(2)">
+                      <span class="tag-notch"></span>
+                      <span class="tag-year">2026</span>
+                    </button>
+                  </div>
+                </div>
               </div>
+
             </div>
           </div>
         </div>

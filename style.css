@@ -1802,103 +1802,532 @@ textarea {
   line-height: 1.6;
 }
 
-/* --- Experience Timeline --- */
-.timeline-wrap {
-  max-width: 900px;
-  margin: 0 auto;
+/* --- Cinematic Curved Hanging Timeline & History (Full Width & Seamless - Compact Height) --- */
+.timeline-section.full-width-timeline {
+  width: 100vw;
   position: relative;
-  padding: 40px 0;
-}
-.timeline-center-line {
-  position: absolute;
   left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  padding: 40px 0 30px;
+  overflow: hidden;
+  background: #090b0e;
+}
+
+.timeline-fullwidth-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.section-header-container {
+  margin-bottom: 12px;
+}
+
+.curved-timeline-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+  padding: 10px 0 20px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  min-height: 400px;
+}
+
+.timeline-content-container {
+  position: relative;
+  z-index: 5;
+}
+
+.timeline-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 36px 36px;
+  pointer-events: none;
+  opacity: 0.9;
+  z-index: 1;
+}
+
+.timeline-glow-orange {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 106, 0, 0.2) 0%, transparent 70%);
+  filter: blur(80px);
+  right: 5%;
+  top: 10%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Integrated Atmospheric Backdrop Portrait (Camouflaged & Blended Seamlessly) */
+.timeline-backdrop-portrait {
+  position: absolute;
+  right: 0;
   top: 0;
   bottom: 0;
-  width: 2px;
-  background: rgba(255, 255, 255, 0.05);
-  transform: translateX(-50%);
-}
-.timeline-progress-line {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 0%;
-  background: linear-gradient(to bottom, var(--secondary), var(--primary));
-  box-shadow: 0 0 10px var(--primary);
-  transition: height 0.1s ease;
+  width: 58%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+  mask-image: radial-gradient(circle at 65% 42%, black 25%, rgba(0, 0, 0, 0.7) 48%, transparent 75%),
+              linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%),
+              linear-gradient(to right, transparent 0%, black 35%, black 100%);
+  -webkit-mask-image: radial-gradient(circle at 65% 42%, black 25%, rgba(0, 0, 0, 0.7) 48%, transparent 75%),
+                      linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%),
+                      linear-gradient(to right, transparent 0%, black 35%, black 100%);
+  mask-composite: intersect;
+  -webkit-mask-composite: source-in;
 }
 
-.timeline-item {
+.backdrop-portrait-img {
   width: 100%;
-  margin-bottom: 60px;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  mix-blend-mode: luminosity;
+  opacity: 0.75;
+  filter: contrast(1.25) brightness(0.8);
+  transition: opacity 0.5s ease;
+}
+
+.timeline-backdrop-portrait::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 65% 35%, rgba(255, 106, 0, 0.22) 0%, transparent 60%);
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+}
+
+.backdrop-portrait-vignette {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 68% 40%, transparent 20%, rgba(9, 11, 14, 0.8) 60%, #090b0e 90%),
+    linear-gradient(to right, #090b0e 0%, rgba(9, 11, 14, 0.7) 25%, transparent 55%),
+    linear-gradient(to bottom, transparent 50%, #090b0e 100%),
+    linear-gradient(to top, rgba(9, 11, 14, 0.9) 0%, transparent 25%);
+}
+
+/* --- Active Milestone Panel (Replacing Old Hero Header on Top-Left) --- */
+.timeline-content-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* --- Hanging Timeline Curve & Tags Stage (Compact Height) --- */
+.timeline-curve-stage {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  margin: 0 0 12px;
+  z-index: 5;
+}
+
+.timeline-curve-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.timeline-path-glow {
+  stroke: rgba(200, 255, 61, 0.35);
+  stroke-width: 8;
+  filter: blur(6px);
+  stroke-dasharray: 14 18;
+  animation: roadmapFlow 20s linear infinite;
+}
+
+.timeline-path-dashed {
+  stroke: rgba(255, 255, 255, 0.9);
+  stroke-width: 3.8;
+  stroke-dasharray: 8 11;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.4));
+  animation: roadmapFlow 12s linear infinite;
+}
+
+@keyframes roadmapFlow {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -300;
+  }
+}
+
+.hanging-tags-track {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Individual Hanging Tag Wrapper with continuous subtle ambient sway */
+.hanging-tag-wrapper {
+  position: absolute;
+  left: var(--tag-pos-x);
+  top: var(--tag-pos-y);
+  transform: translate(-50%, 0);
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: top center;
+  animation: ambientTagBob 4s ease-in-out infinite alternate;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Modifier: Upward Standing Tag (Opposite / Above the curve) */
+.hanging-tag-wrapper.tag-standing {
+  transform: translate(-50%, -100%);
+  transform-origin: bottom center;
+  flex-direction: column-reverse;
+}
+
+.hanging-tag-wrapper.tag-standing .tag-string {
+  margin-bottom: 0;
+  margin-top: -1px;
+  flex-direction: column-reverse;
+}
+
+.hanging-tag-wrapper.tag-standing .string-ring {
+  margin-bottom: 0;
+  margin-top: -2px;
+}
+
+.hanging-tag-wrapper[data-index="0"] {
+  animation-delay: 0s;
+}
+.hanging-tag-wrapper[data-index="1"] {
+  animation-delay: -1.2s;
+}
+.hanging-tag-wrapper[data-index="2"] {
+  animation-delay: -2.4s;
+}
+.hanging-tag-wrapper[data-index="3"] {
+  animation-delay: -0.6s;
+}
+
+@keyframes ambientTagBob {
+  0% {
+    transform: translate(-50%, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-50%, 3px) rotate(1.5deg);
+  }
+  100% {
+    transform: translate(-50%, -2px) rotate(-1.5deg);
+  }
+}
+
+.hanging-tag-wrapper.tag-standing {
+  animation: ambientTagBobStanding 4s ease-in-out infinite alternate;
+}
+
+@keyframes ambientTagBobStanding {
+  0% {
+    transform: translate(-50%, -100%) rotate(0deg);
+  }
+  50% {
+    transform: translate(-50%, calc(-100% - 3px)) rotate(1.5deg);
+  }
+  100% {
+    transform: translate(-50%, calc(-100% + 2px)) rotate(-1.5deg);
+  }
+}
+
+/* Thread String Loop connecting tag directly through curve line */
+.tag-string {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 7;
+}
+
+.string-ring {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  background: rgba(9, 11, 14, 0.9);
+  box-shadow: 0 0 8px rgba(200, 255, 61, 0.5);
+  position: relative;
+  z-index: 8;
+}
+
+.string-line {
+  width: 1.5px;
+  height: 12px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(200, 255, 61, 0.7));
+}
+
+/* Hanging Cyber Tag Button (Sleek Glassmorphic Bevel & Neon Cyber Accent) */
+.hanging-tag {
+  width: 46px;
+  height: 68px;
+  background: linear-gradient(170deg, #182214 0%, #0c140a 100%);
+  border-radius: 9px;
+  border: 1px solid rgba(200, 255, 61, 0.45);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.75), 0 0 16px rgba(200, 255, 61, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.25);
   position: relative;
   display: flex;
-}
-.timeline-item.left {
-  justify-content: flex-start;
-}
-.timeline-item.right {
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transform: rotate(var(--tag-tilt));
+  transform-origin: top center;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
-.timeline-dot {
-  width: 16px;
-  height: 16px;
-  background-color: var(--bg);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  position: absolute;
-  left: 50%;
-  top: 24px;
-  transform: translateX(-50%);
-  z-index: 10;
-  transition:
-    border-color 0.4s ease,
-    background-color 0.4s ease,
-    box-shadow 0.4s ease;
+.hanging-tag-wrapper.tag-standing .hanging-tag {
+  transform-origin: bottom center;
 }
-.timeline-item.active .timeline-dot {
+
+.hanging-tag-wrapper:hover .hanging-tag {
+  transform: rotate(0deg) scale(1.14) translateY(3px);
+  animation: tagSwingHover 0.8s ease-in-out infinite alternate;
+  background: linear-gradient(170deg, #243516 0%, #12200c 100%);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.85), 0 0 25px rgba(200, 255, 61, 0.5);
   border-color: var(--primary);
-  background-color: var(--primary);
+}
+
+.hanging-tag-wrapper.tag-standing:hover .hanging-tag {
+  transform: rotate(0deg) scale(1.14) translateY(-3px);
+}
+
+.hanging-tag-wrapper.active .hanging-tag {
+  background: linear-gradient(170deg, var(--primary) 0%, #a2ce2b 100%);
+  border-color: #ffffff;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.8), 0 0 28px rgba(200, 255, 61, 0.85);
+  transform: rotate(0deg) scale(1.16) translateY(3px);
+}
+
+.hanging-tag-wrapper.tag-standing.active .hanging-tag {
+  transform: rotate(0deg) scale(1.16) translateY(-3px);
+}
+
+/* Tag Metal Eyelet Hole */
+.tag-notch {
+  position: absolute;
+  top: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #090b0e;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.9);
+}
+
+.hanging-tag-wrapper.tag-standing .tag-notch {
+  top: auto;
+  bottom: 6px;
+}
+
+.tag-year {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--primary);
+  text-shadow: 0 0 8px rgba(200, 255, 61, 0.5);
+  pointer-events: none;
+  margin-top: 4px;
+}
+
+.hanging-tag-wrapper.tag-standing .tag-year {
+  margin-top: 0;
+  margin-bottom: 4px;
+}
+
+.hanging-tag-wrapper.active .tag-year {
+  color: #0b0f14;
+  text-shadow: none;
+  font-weight: 900;
+}
+
+.hanging-tag-wrapper.active .string-ring {
+  border-color: var(--primary);
+  box-shadow: 0 0 12px var(--primary);
+}
+
+.hanging-tag-wrapper.active .string-line {
+  background: var(--primary);
   box-shadow: 0 0 10px var(--primary);
 }
 
-.timeline-card {
-  width: 45%;
-  position: relative !important;
-  transition: border-color var(--transition-normal);
-}
-.timeline-item:hover .timeline-card {
-  border-color: var(--primary);
-  box-shadow: 0 10px 25px rgba(200, 255, 61, 0.05);
+.tag-dot {
+  position: absolute;
+  bottom: 6px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
 }
 
-.timeline-date {
+.hanging-tag-wrapper.active .tag-dot {
+  background: #0b0f14;
+}
+
+@keyframes tagSwingHover {
+  0% {
+    transform: rotate(-6deg) scale(1.12) translateY(3px);
+  }
+  100% {
+    transform: rotate(6deg) scale(1.12) translateY(3px);
+  }
+}
+
+/* --- Active Milestone Interactive Card (Left-Aligned, Borderless & Seamless) --- */
+.timeline-active-milestone-panel {
+  position: relative;
+  z-index: 4;
+  max-width: 580px;
+  margin-right: auto;
+  margin-left: 0;
+  background: rgba(14, 18, 24, 0.65);
+  border: none;
+  outline: none;
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: none;
+  backdrop-filter: blur(14px);
+  transition: background 0.4s ease;
+}
+
+.timeline-active-milestone-panel:hover {
+  background: rgba(18, 24, 33, 0.85);
+  box-shadow: none;
+  border: none;
+  outline: none;
+}
+
+.milestone-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.milestone-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.milestone-year-badge {
   font-size: 11px;
   font-weight: 700;
   color: var(--primary);
+  background: rgba(200, 255, 61, 0.1);
+  border: 1px solid rgba(200, 255, 61, 0.25);
+  padding: 3px 8px;
+  border-radius: 5px;
   letter-spacing: 1px;
-  margin-bottom: 12px;
 }
-.timeline-title {
-  font-family: var(--font-display);
-  font-size: 18px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-.timeline-company {
-  display: block;
-  font-size: 11px;
+
+.milestone-tag {
+  font-size: 10px;
   color: var(--text-muted);
+  letter-spacing: 1.2px;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 16px;
 }
-.timeline-text {
+
+.milestone-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.milestone-nav-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.milestone-nav-btn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #000;
+  transform: translateY(-1px);
+}
+
+.milestone-counter {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
+}
+
+.milestone-card-body .milestone-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  transition: opacity 0.3s ease;
+}
+
+.milestone-card-body .milestone-desc {
   font-size: 13px;
+  line-height: 1.5;
   color: var(--text-secondary);
-  line-height: 1.6;
+  margin-bottom: 12px;
+  max-width: 860px;
+  transition: opacity 0.3s ease;
+}
+
+.milestone-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skill-pill {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.skill-pill:hover {
+  border-color: rgba(255, 106, 0, 0.4);
+  color: #ff8c37;
+  background: rgba(255, 106, 0, 0.08);
 }
 
 /* --- GitHub Stats Section --- */
@@ -2272,19 +2701,33 @@ a.m-val:hover {
     display: flex;
     justify-content: center;
   }
-  .timeline-center-line {
-    left: 20px;
+  .curved-timeline-container {
+    padding: 28px 18px 24px;
   }
-  .timeline-dot {
-    left: 20px;
+  .curved-timeline-hero {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
-  .timeline-card {
-    width: calc(100% - 40px);
-    margin-left: 40px;
+  .timeline-hero-right {
+    order: -1;
   }
-  .timeline-item.left,
-  .timeline-item.right {
-    justify-content: flex-start;
+  .timeline-portrait-wrapper {
+    width: 200px;
+    height: 230px;
+  }
+  .timeline-curve-stage {
+    height: 190px;
+    overflow-x: visible;
+  }
+  .hanging-tag {
+    width: 38px;
+    height: 62px;
+  }
+  .tag-year {
+    font-size: 11px;
+  }
+  .timeline-active-milestone-panel {
+    padding: 18px 16px;
   }
   .profile-card {
     padding: 24px;
