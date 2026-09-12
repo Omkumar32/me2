@@ -111,6 +111,15 @@ describe('🌐 Public API Endpoints Suite', () => {
     expect(res.text).toContain('<?xml');
     expect(res.text).toContain('https://omkumar.dev/');
   });
+
+  it('GET / should serve index.html containing universal welcome onboarding screen', async () => {
+    const res = await request(app).get('/');
+    expect(res.status).toBe(200);
+    expect(res.text).toContain('mobile-welcome-screen');
+    expect(res.text).toMatch(/welcome-portrait/);
+    expect(res.text).toContain('mobileWelcomeSkip');
+    expect(res.text).toContain('mobileWelcomeAction');
+  });
 });
 
 describe('⚡ CMS Projects & File Upload Suite', () => {

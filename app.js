@@ -2,12 +2,112 @@ document.addEventListener("DOMContentLoaded", () => {
   if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }
+  initMobileWelcomeScreen();
 });
 window.addEventListener("load", () => {
   if (typeof lucide !== "undefined") {
     lucide.createIcons();
   }
+  initMobileWelcomeScreen();
 });
+
+// --- Mobile App Welcome / Onboarding Screen Controller ---
+function initMobileWelcomeScreen() {
+  const welcomeScreen = document.getElementById("mobileWelcomeScreen");
+  const skipBtn = document.getElementById("mobileWelcomeSkip");
+  const actionBtn = document.getElementById("mobileWelcomeAction");
+
+  if (!welcomeScreen || welcomeScreen.dataset.initialized === "true") return;
+  welcomeScreen.dataset.initialized = "true";
+
+  const isDismissed = sessionStorage.getItem("tux_mobile_welcome_dismissed");
+  if (isDismissed === "true") {
+    welcomeScreen.classList.add("dismissed");
+    welcomeScreen.style.display = "none";
+    return;
+  }
+
+  function goToLandingPage() {
+    // Disable interactions immediately
+    welcomeScreen.style.pointerEvents = "none";
+    welcomeScreen.classList.add("exiting");
+    try { sessionStorage.setItem("tux_mobile_welcome_dismissed", "true"); } catch (err) {}
+
+    // Smoothly scroll to landing page top
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // GSAP cinematic ultra-smooth exit
+    if (typeof gsap !== "undefined") {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          welcomeScreen.classList.add("dismissed");
+          welcomeScreen.style.display = "none";
+          if (typeof lucide !== "undefined") lucide.createIcons();
+        }
+      });
+
+      tl.to(".mobile-welcome-visual", {
+        scale: 1.08,
+        y: -20,
+        opacity: 0,
+        duration: 0.65,
+        ease: "power2.inOut"
+      })
+      .to([".mobile-welcome-topbar", ".mobile-welcome-body", ".mobile-welcome-footer"], {
+        y: 15,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.04,
+        ease: "power2.inOut"
+      }, "-=0.45")
+      .to(welcomeScreen, {
+        yPercent: -100,
+        duration: 0.85,
+        ease: "expo.inOut"
+      }, "-=0.35");
+    } else {
+      setTimeout(() => {
+        welcomeScreen.classList.add("dismissed");
+        welcomeScreen.style.display = "none";
+        if (typeof lucide !== "undefined") lucide.createIcons();
+      }, 850);
+    }
+  }
+
+  if (skipBtn) {
+    skipBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      goToLandingPage();
+    });
+  }
+
+  if (actionBtn) {
+    actionBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      goToLandingPage();
+    });
+  }
+
+  // Swipe up gesture to enter landing page
+  let touchStartY = 0;
+  welcomeScreen.addEventListener("touchstart", (e) => {
+    if (e.touches && e.touches.length > 0) {
+      touchStartY = e.touches[0].clientY;
+    }
+  }, { passive: true });
+
+  welcomeScreen.addEventListener("touchend", (e) => {
+    if (e.changedTouches && e.changedTouches.length > 0) {
+      const touchEndY = e.changedTouches[0].clientY;
+      if (touchStartY - touchEndY > 50) {
+        goToLandingPage();
+      }
+    }
+  }, { passive: true });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const state = {
     mouse: { x: 0, y: 0, targetX: 0, targetY: 0 },
