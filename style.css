@@ -33,6 +33,8 @@
   --glass-blur: blur(16px);
 }
 
+
+
 /* --- Reset & Global --- */
 * {
   box-sizing: border-box;
@@ -121,6 +123,8 @@ textarea {
   position: relative;
   z-index: 5;
 }
+
+
 
 /* --- Custom Cursor Glow --- */
 .cursor-glow {
@@ -2607,15 +2611,12 @@ a.m-val:hover {
   .sidebar {
     left: -100px; /* Hide sidebar offscreen on mobile */
   }
-  .sidebar.open {
-    left: 12px;
-  }
   .main-content {
     margin-left: 0;
     padding: 0 16px;
   }
   .hero-bg-image {
-    background-position: center top;
+    display: none !important;
   }
   .hero-name {
     font-size: 48px;

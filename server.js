@@ -19,6 +19,7 @@ if (fs.existsSync(envPath)) {
     }
   });
 }
+const compression = require("compression");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const CONFIG_PATH = path.join(__dirname, "config.json");
@@ -26,6 +27,16 @@ const ADMIN_USER = process.env.ADMIN_USER || "Admintux09";
 const ADMIN_PASS = process.env.ADMIN_PASS || "tux@#1234";
 const AUTH_SECRET = process.env.AUTH_SECRET || ADMIN_PASS || "tux_admin_secret_key_2026";
 const TOKEN_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+// --- High Performance HTTP Gzip Compression ---
+app.use(compression({
+  level: 6,
+  threshold: 1024, // only compress responses > 1KB
+  filter: (req, res) => {
+    if (req.headers["x-no-compression"]) return false;
+    return compression.filter(req, res);
+  }
+}));
 
 // --- Security: Rate Limiters ---
 const authLimiter = rateLimit({
@@ -489,12 +500,25 @@ const allowedPublicFiles = [
   "tux-artwork.jpg",
   "tux-artwork.png",
   "tux-logo.png",
+  "om-portrait.webp",
+  "om-portrait.jpg",
   "resume.pdf",
+  "robots.txt",
+  "sitemap.xml",
 ];
 allowedPublicFiles.forEach((file) => {
   app.get(`/${file}`, (req, res) => {
-    const filePath = path.join(__dirname, file);
+    let filePath = path.join(__dirname, "public", file);
+    if (!fs.existsSync(filePath)) {
+      filePath = path.join(__dirname, file);
+    }
     if (fs.existsSync(filePath)) {
+      // Set high-performance Cache-Control
+      if (file.endsWith(".webp") || file.endsWith(".png") || file.endsWith(".jpg") || file.endsWith(".svg") || file.endsWith(".pdf")) {
+        res.setHeader("Cache-Control", "public, max-age=2592000, immutable"); // 30 days
+      } else if (file.endsWith(".min.js") || file.endsWith(".css")) {
+        res.setHeader("Cache-Control", "public, max-age=604800, stale-while-revalidate=86400"); // 7 days
+      }
       res.sendFile(filePath);
     } else {
       res.status(404).send("Not found");

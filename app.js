@@ -101,6 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuHamburger = document.getElementById("menuHamburger");
   const mobileMenu = document.getElementById("mobileMenu");
   const mobileMenuLinks = document.querySelectorAll(".mobile-link");
+
+
   if (menuHamburger && mobileMenu) {
     menuHamburger.addEventListener("click", () => {
       mobileMenu.classList.toggle("open");

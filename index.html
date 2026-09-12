@@ -3,14 +3,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Om Kumar  (tux)| Software Engineer &amp; Full Stack Web Developer |Tux</title>
+    <link rel="canonical" href="https://omkumar.dev/" />
+
     <meta
       name="description"
-      content="Om Kumar (TUX) — Full Stack Web Developer & Software Engineer. Skilled in TypeScript, Next.js, React, Node.js, MongoDB, C, and modern scalable web systems."
+      content="Om Kumar (TUX) — Software Engineer & Full Stack Web Developer specializing in high-performance web systems, Next.js, React, Node.js, and modern distributed architectures."
     />
     <meta name="author" content="Om Kumar (TUX)" />
-    <meta name="keywords" content="TUX, Om Kumar, Om Kumar TUX, Full Stack Developer, Software Engineer, Next.js, React, TypeScript, Node.js, Web Development, Portfolio" />
+    <meta name="publisher" content="Om Kumar (TUX)" />
+    <meta name="copyright" content="Om Kumar" />
+    <meta name="keywords" content="Om Kumar, TUX, Om Kumar TUX, Full Stack Developer, Software Engineer, Next.js, React, TypeScript, Node.js, Web Development, Portfolio" />
     <meta name="robots" content="index, follow" />
-    <title>Om Kumar (TUX) — Full Stack Web Developer</title>
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://omkumar.dev/" />
+    <meta property="og:title" content="Om Kumar  (tux)| Software Engineer &amp; Full Stack Web Developer |Tux" />
+    <meta property="og:description" content="Explore the portfolio of Om Kumar (TUX) — Software Engineer & Full Stack Web Developer building high-performance, responsive web systems." />
+    <meta property="og:image" content="https://omkumar.dev/om-portrait.webp" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Om Kumar  (tux)| Software Engineer &amp; Full Stack Web Developer |Tux" />
+    <meta name="twitter:description" content="Explore the portfolio of Om Kumar (TUX) — Software Engineer & Full Stack Web Developer building high-performance web systems." />
+    <meta name="twitter:image" content="https://omkumar.dev/om-portrait.webp" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="alternate icon" href="/favicon.ico" />
@@ -18,12 +35,49 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="image" href="om-portrait.webp" type="image/webp" />
+    <link rel="preload" as="image" href="tux-artwork.png" type="image/png" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700&family=Caveat:wght@400;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&family=Caveat:wght@400;700&display=swap"
       rel="stylesheet"
     />
 
     <link rel="stylesheet" href="style.css" />
+
+    <!-- Schema.org JSON-LD Structured Data for Google Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://omkumar.dev/#person",
+          "name": "Om Kumar",
+          "alternateName": "TUX",
+          "url": "https://omkumar.dev/",
+          "image": "https://omkumar.dev/om-portrait.webp",
+          "jobTitle": "Software Engineer & Full Stack Web Developer",
+          "worksFor": {
+            "@type": "Organization",
+            "name": "Self-Employed"
+          },
+          "sameAs": [
+            "https://github.com/Omkumar32",
+            "https://www.linkedin.com/in/om-kumar-07441728a/",
+            "https://instagram.com"
+          ],
+          "knowsAbout": ["TypeScript", "Next.js", "React", "Node.js", "Express", "MongoDB", "C", "C++", "Web Performance", "API Design"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://omkumar.dev/#website",
+          "url": "https://omkumar.dev/",
+          "name": "Om Kumar | Software Engineer & Full Stack Web Developer",
+          "publisher": { "@id": "https://omkumar.dev/#person" }
+        }
+      ]
+    }
+    </script>
 
     <script src="/gsap.min.js" defer></script>
     <script src="/ScrollTrigger.min.js" defer></script>
@@ -31,6 +85,8 @@
   </head>
 
   <body>
+
+
     <div class="cursor-glow" id="cursorGlow"></div>
 
     <aside class="sidebar" id="sidebar">
@@ -70,13 +126,6 @@
           <i data-lucide="mail"></i>
           <span>Contact</span>
         </a>
-      </div>
-
-      <div class="sidebar-theme">
-        <button class="theme-btn" aria-label="Toggle theme">
-          <i data-lucide="sun" class="sun-icon"></i>
-          <i data-lucide="moon" class="moon-icon active"></i>
-        </button>
       </div>
     </aside>
 
@@ -213,10 +262,10 @@
 
             <div class="hero-featured-projects init-fade">
               <div class="featured-projects-header">
-                <div class="header-title">
+                <h3 class="header-title">
                   <span class="green-bullet"></span>
-                  <span>Featured Projects</span>
-                </div>
+                  <span>Featured Highlights</span>
+                </h3>
                 <a href="/projects" class="view-all-link">
                   <span>View all projects</span>
                   <i data-lucide="arrow-right"></i>

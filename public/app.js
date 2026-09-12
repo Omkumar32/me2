@@ -101,6 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const menuHamburger = document.getElementById("menuHamburger");
   const mobileMenu = document.getElementById("mobileMenu");
   const mobileMenuLinks = document.querySelectorAll(".mobile-link");
+
+
   if (menuHamburger && mobileMenu) {
     menuHamburger.addEventListener("click", () => {
       mobileMenu.classList.toggle("open");
@@ -111,24 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
         mobileMenu.classList.remove("open");
         menuHamburger.classList.remove("active");
       });
-    });
-  }
-  const soundControl = document.getElementById("soundControl");
-  const ambientAudio = document.getElementById("ambientAudio");
-  let audioPlaying = false;
-  if (soundControl && ambientAudio) {
-    ambientAudio.volume = 0.15;
-    soundControl.addEventListener("click", () => {
-      audioPlaying = !audioPlaying;
-      if (audioPlaying) {
-        ambientAudio
-          .play()
-          .catch((err) => console.log("Audio play blocked by browser policy"));
-        soundControl.querySelector(".sound-btn").classList.add("playing");
-      } else {
-        ambientAudio.pause();
-        soundControl.querySelector(".sound-btn").classList.remove("playing");
-      }
     });
   }
   const particlesCanvas = document.getElementById("particlesCanvas");
